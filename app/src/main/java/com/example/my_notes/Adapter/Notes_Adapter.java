@@ -50,7 +50,7 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
         try {
             holder.binding.titleTxt.setText(object.getString("Title"));
             // holder.binding.tvMail.setText(object.getString("CustomerEmail"));
-            holder.binding.subject.setText(object.getString("Subject"));
+            holder.binding.subjectTxt.setText(object.getString("Subject"));
             holder.binding.notes.setText(object.getString("Desc"));
 
 

@@ -30,7 +30,9 @@ public class Notes_Fragment extends Fragment {
   FragmentNotesBinding binding;
 
   Notes_Adapter notes_adapter;
-  ArrayList<String> list;
+ /* ArrayList<String> list;*/
+
+  ArrayList<JSONObject> list=new ArrayList<>();
 
   APICallbacks apiCallbacks=new APICallbacks() {
     @Override
@@ -60,12 +62,12 @@ public class Notes_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
       binding = FragmentNotesBinding.inflate(inflater,container,false);
-      list = new ArrayList<>();
+      /*list = new ArrayList<>();
       list.add("Home documents");
       list.add("Work documents");
       list.add("playing file");
       list.add("things buying");
-      list.add("Work documents");
+      list.add("Work documents");*/
       RecyclerView recyclerView = binding.notesRecyclerview;
       notes_adapter = new Notes_Adapter(getActivity(),list);
       recyclerView.setAdapter(notes_adapter);

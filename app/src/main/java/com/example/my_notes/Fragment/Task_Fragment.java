@@ -26,7 +26,7 @@ public class Task_Fragment extends Fragment {
   FragmentTaskBinding binding;
 
   Task_Adapter task_adapter;
-//  ArrayList<String>list;
+ /* ArrayList<String>list;*/
 
     List<JSONObject> list = new ArrayList<>();
 
@@ -38,12 +38,12 @@ public class Task_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTaskBinding.inflate(inflater,container,false);
-        list = new ArrayList<>();
+/*        list = new ArrayList<>();
         list.add("cricket");
         list.add("Field Hockey");
         list.add("Badminton");
         list.add("Football ");
-        list.add("volleyball");
+        list.add("volleyball");*/
         RecyclerView recyclerView = binding.taskRecyclerview;
         task_adapter = new Task_Adapter(getActivity(),list);
         recyclerView.setAdapter(task_adapter);
