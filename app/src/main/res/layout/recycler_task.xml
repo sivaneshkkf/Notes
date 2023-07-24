@@ -23,6 +23,7 @@
 
         </TextView>
         <TextView
+            android:id="@+id/subject_txt"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/task"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

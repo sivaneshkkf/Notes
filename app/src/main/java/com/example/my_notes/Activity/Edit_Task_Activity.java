@@ -12,7 +12,7 @@ import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
-import com.example.my_notes.databinding.ActivityAddTaskBinding;
+import com.example.my_notes.databinding.ActivityEditTaskBinding;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,10 +20,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Add_Task_Activity extends AppCompatActivity {
-ActivityAddTaskBinding binding;
+public class Edit_Task_Activity extends AppCompatActivity {
+ActivityEditTaskBinding binding;
     Activity activity;
-    String userId,title,subject,desc;
+
+    String taskId,title,subject,desc;
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
         public void taskProgress(String tag, int progress, Bundle bundle) {
@@ -34,7 +35,7 @@ ActivityAddTaskBinding binding;
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
                 if(apiStatus==APIStatus.SUCCESS){
-                    if(tag.equalsIgnoreCase("createNotes")){
+                    if(tag.equalsIgnoreCase("updateTask")){
                         if(response.getBoolean("status")){
                             JSONObject object=response.getJSONObject("");
 
@@ -51,14 +52,12 @@ ActivityAddTaskBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddTaskBinding.inflate(getLayoutInflater());
+        binding = ActivityEditTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         title = binding.edtTitle.getText().toString();
         subject = binding.edtSubject.getText().toString();
         desc = binding.edtTask.getText().toString();
-
-
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,14 +65,15 @@ ActivityAddTaskBinding binding;
                 finish();
             }
         });
+
     }
 
     private void callapi() {
         Map<String, String> map = new HashMap<>();
-        map.put("userid", userId);
+        map.put("taskid", taskId);
         map.put("Title", title);
         map.put("Subject", subject);
         map.put("Desc", desc);
-        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "createNotes", map, "createNotes", new Bundle(), apiCallbacks);
+        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "updateTask", map, "updateTask", new Bundle(), apiCallbacks);
     }
 }
