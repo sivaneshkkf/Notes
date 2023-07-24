@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.Add_Notes_Activity"
+    android:orientation="vertical"
+    android:background="@color/white">
+    
+    <LinearLayout
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bottom_curve_background"
+        android:backgroundTint="@color/blue">
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_arrow">
+
+        </ImageView>
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Notes"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+        </TextView>
+        <ImageView
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_arrow">
+
+        </ImageView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:endIconTint="#000000"
+            app:hintTextColor="@color/blue"
+            app:hintAnimationEnabled="true"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:hint="Title"
+            app:boxBackgroundMode="none"
+            android:textColorHint="@color/black"
+            app:startIconTint="#000000">
+
+            <EditText
+                android:id="@+id/edt_title"
+                android:inputType="text"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:backgroundTint="@color/text_box_colour"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@drawable/curser_color">
+
+            </EditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:endIconTint="#000000"
+            app:hintTextColor="@color/blue"
+            app:hintAnimationEnabled="true"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:hint="Subject"
+            app:boxBackgroundMode="none"
+            android:textColorHint="@color/black"
+            app:startIconTint="#000000">
+
+            <EditText
+                android:id="@+id/edt_subject"
+                android:inputType="text"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:backgroundTint="@color/text_box_colour"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@drawable/curser_color">
+
+            </EditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            app:endIconTint="#000000"
+            app:hintTextColor="@color/blue"
+            app:hintAnimationEnabled="true"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:hint="Notes"
+            app:boxBackgroundMode="none"
+            android:textColorHint="@color/black"
+            app:startIconTint="#000000">
+
+            <EditText
+                android:id="@+id/edt_notes"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:backgroundTint="@color/text_box_colour"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:lines="10"
+                android:layout_gravity="top"
+                android:gravity="top"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:textColorHint="@color/black"
+                android:textCursorDrawable="@drawable/curser_color">
+
+            </EditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/save"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text="Save Details"
+            android:backgroundTint="@color/blue"
+            android:background="@drawable/background"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

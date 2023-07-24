@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/drawerlayout"
+    android:background="@color/white">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:paddingVertical="30dp"
+        android:paddingHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bottom_curve_background"
+        android:backgroundTint="@color/blue">
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_menu">
+
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="NOTES"
+            android:layout_weight="1">
+
+        </TextView>
+        <ImageView
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_menu">
+
+        </ImageView>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/frame_home"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_tab_menu"
+        android:background="@color/white"
+        android:id="@+id/bottom_navigation"
+        style="@style/BottomNavigationViewStyle"
+        app:labelVisibilityMode="selected"
+        android:focusableInTouchMode="true"
+        app:itemHorizontalTranslationEnabled="true">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+</LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/text_box_color"
+        app:itemTextColor="@color/black"
+        app:subheaderColor="@color/black"
+        android:id="@+id/navigatonView"
+        app:headerLayout="@layout/header_menu"
+        app:menu="@menu/main_menu"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start">
+
+    </com.google.android.material.navigation.NavigationView>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

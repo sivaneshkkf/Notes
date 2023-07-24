@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;
+    <style name="Base.Theme.My_Notes" parent="Theme.Material3.DayNight.NoActionBar">
+        &lt;!&ndash; Customize your light theme here. &ndash;&gt;
+        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;
+    </style>
+
+    <style name="Theme.My_Notes" parent="Base.Theme.My_Notes" />-->
+
+
+    <style name="Theme.AppCompat" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">#ffffff</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>-->
+        <item name="colorAccent">#2C81DD</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AppCompat" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+</resources>

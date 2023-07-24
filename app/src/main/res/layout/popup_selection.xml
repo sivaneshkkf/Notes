@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="20dp"
+        android:paddingHorizontal="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:text="\t\t\tselect your needs"
+            android:layout_gravity="center"
+            android:gravity="center">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </TextView>
+        <ImageView
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cancel_icon">
+
+        </ImageView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/pop_notes_txt"
+        android:drawableLeft="@drawable/icon_notes"
+        android:drawablePadding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Add Notes"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp">
+
+    </TextView>
+    <TextView
+        android:layout_marginBottom="20dp"
+        android:id="@+id/pop_task_txt"
+        android:drawableLeft="@drawable/icon_task"
+        android:drawablePadding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="Add Tasks"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp">
+    </TextView>
+</LinearLayout>

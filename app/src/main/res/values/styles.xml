@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BottomNavigationViewStyle" parent="Widget.Design.BottomNavigationView">
+
+<!--        for changing the text color in bottom navigation -->
+        <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
+
+        <!--        for changing the icon color in bottom navigation -->
+        <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
+
+    </style>
+
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+    </style>
+</resources>

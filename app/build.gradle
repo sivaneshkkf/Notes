@@ -1,0 +1,76 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.example.my_notes'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.my_notes"
+        minSdk 28
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+//    this is the dependency for binding the components
+    buildFeatures {
+        viewBinding true
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    //this is pre defined dependencies...
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+
+    //for saveing the image as circle
+   /* implementation 'de.hdodenhof:circleimageview:3.1.0'*/
+       //image cropper
+   // api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //for api implementation
+    implementation 'com.android.volley:volley:1.2.1'
+    //this is for swip and refresh the api
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
+//    util
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation "androidx.browser:browser:1.5.0"
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+    implementation 'com.github.amitshekhariitbhu.Fast-Android-Networking:android-networking:1.0.2'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    implementation 'com.android.volley:volley:1.2.1'
+
+    implementation 'io.github.chaosleung:pinview:1.4.4'
+
+}
