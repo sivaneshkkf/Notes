@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.Add_Task_Activity"
-    android:background="@color/white"
-    android:orientation="vertical">
+    tools:context=".Activity.Edit_Notes_Activity"
+    android:orientation="vertical"
+    android:background="@color/white">
+
     <LinearLayout
         android:paddingHorizontal="20dp"
         android:paddingVertical="30dp"
@@ -28,7 +29,7 @@
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Task"
+            android:text="Edit Notes"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -121,6 +122,7 @@
 
 
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,13 +132,13 @@
             app:hintAnimationEnabled="true"
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:hint="Tasks"
+            android:hint="Notes"
             app:boxBackgroundMode="none"
             android:textColorHint="@color/black"
             app:startIconTint="#000000">
 
             <EditText
-                android:id="@+id/edt_task"
+                android:id="@+id/edt_notes"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

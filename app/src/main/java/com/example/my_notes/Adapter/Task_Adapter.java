@@ -11,13 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.my_notes.databinding.RecyclerNotesBinding;
 import com.example.my_notes.databinding.RecyclerTaskBinding;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolder> {
     Context context;
-    ArrayList<String> list;
+//    ArrayList<String> list;
+    List<JSONObject> list;
 
-    public Task_Adapter(Context context, ArrayList<String> list) {
+    public Task_Adapter(Context context, List<JSONObject> list) {
         this.context = context;
         this.list = list;
     }
@@ -33,7 +38,20 @@ public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolde
     @Override
     public void onBindViewHolder(@NonNull AppViewHolder holder, int position) {
 
-        holder.binding.titleTxt.setText(list.get(position));
+//        holder.binding.titleTxt.setText(list.get(position));
+
+        JSONObject object = list.get(position);
+
+        try {
+            holder.binding.titleTxt.setText(object.getString("Title"));
+            // holder.binding.tvMail.setText(object.getString("CustomerEmail"));
+            holder.binding.subjectTxt.setText(object.getString("Subject"));
+            holder.binding.task.setText(object.getString("Desc"));
+
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
