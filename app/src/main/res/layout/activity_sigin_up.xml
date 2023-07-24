@@ -155,7 +155,7 @@
             app:startIconTint="#000000">
 
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/password"
                 android:inputType="textPassword"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
