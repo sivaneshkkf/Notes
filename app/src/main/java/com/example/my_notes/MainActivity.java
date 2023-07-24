@@ -5,6 +5,7 @@ import static android.media.MediaRecorder.VideoSource.CAMERA;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 
 import android.app.Activity;
@@ -28,6 +29,7 @@ import com.example.my_notes.Activity.Add_Task_Activity;
 import com.example.my_notes.Fragment.Notes_Fragment;
 import com.example.my_notes.Fragment.Task_Fragment;
 
+import com.example.my_notes.Utils.DialogUtils;
 import com.example.my_notes.databinding.ActivityMainBinding;
 import com.example.my_notes.databinding.HeaderMenuBinding;
 import com.example.my_notes.databinding.PopupSelectionBinding;
@@ -40,6 +42,7 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    Activity activity;
 
     HeaderMenuBinding headerMenuBinding;
 
@@ -57,14 +60,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        activity=this;
 
         //for popup view
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         popupBinding = PopupSelectionBinding.inflate(getLayoutInflater());
-        builder.setView(popupBinding.getRoot());
-
-        popup = builder.create();
-        popup.setCanceledOnTouchOutside(false);
+        popup= DialogUtils.getCustomAlertDialog(activity,popupBinding.getRoot());
+        popup.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(popupBinding.getRoot().getContext(),R.drawable.background));
         popup.getWindow().setGravity(Gravity.BOTTOM);
 
         headerMenuBinding = HeaderMenuBinding.inflate(getLayoutInflater());
