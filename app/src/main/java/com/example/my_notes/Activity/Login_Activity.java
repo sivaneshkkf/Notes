@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class Login_Activity extends AppCompatActivity {
 ActivityLoginBinding binding;
+String mail,password;
 Activity activity;
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
@@ -58,6 +59,8 @@ Activity activity;
         setContentView(binding.getRoot());
         activity=this;
 
+        mail=binding.username.getText().toString();
+        password=binding.password.getText().toString();
 
         //onclick method
         View.OnClickListener onClickListener=new View.OnClickListener() {
@@ -84,8 +87,8 @@ Activity activity;
 
     private void callapi() {
         Map<String, String> map = new HashMap<>();
-        map.put("mail", "1");
-        map.put("password", "1");
+        map.put("mail", mail);
+        map.put("password", password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "login", map, "login", new Bundle(), apiCallbacks);
     }
 }
