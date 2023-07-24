@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     HeaderMenuBinding headerMenuBinding;
 
-    private static final int SELECT_IMAGE = 103;
-
     Notes_Fragment notes_fragment = new Notes_Fragment();
     Task_Fragment task_fragment = new Task_Fragment();
 
