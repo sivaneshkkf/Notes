@@ -19,7 +19,6 @@ import java.util.List;
 
 public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolder> {
     Context context;
-//    ArrayList<String> list;
     List<JSONObject> list;
 
     public Task_Adapter(Context context, List<JSONObject> list) {
@@ -38,15 +37,14 @@ public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolde
     @Override
     public void onBindViewHolder(@NonNull AppViewHolder holder, int position) {
 
-//        holder.binding.titleTxt.setText(list.get(position));
 
         JSONObject object = list.get(position);
 
         try {
-            holder.binding.titleTxt.setText(object.getString("Title"));
+            holder.binding.titleTxt.setText(object.getString("title"));
             // holder.binding.tvMail.setText(object.getString("CustomerEmail"));
             holder.binding.subjectTxt.setText(object.getString("Subject"));
-            holder.binding.task.setText(object.getString("Desc"));
+            holder.binding.task.setText(object.getString("description"));
 
 
         } catch (JSONException e) {

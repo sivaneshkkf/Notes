@@ -89,6 +89,7 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
             notesidlist.add(object.getInt("notesid"));
 
         } catch (JSONException e) {
+
             throw new RuntimeException(e);
         }
 
