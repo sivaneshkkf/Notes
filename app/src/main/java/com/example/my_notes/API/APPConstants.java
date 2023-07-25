@@ -3,8 +3,8 @@ package com.example.my_notes.API;
 import android.content.Intent;
 
 public interface APPConstants {
-    public static String HOST = "http://192.168.100.52/docdate_new/";//local
-    public static String API_URL = "api/v2/";
+    public static String HOST = "http://aknotes.akprojects.co/";//local
+    public static String API_URL = "api/";
     public static String MAIN_URL = HOST + API_URL;
     public static String CUSTOMER_LAST_MODIFIED = "2023-01-01 00:00:00";
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -26,6 +27,8 @@ import java.util.Map;
 public class Login_Activity extends AppCompatActivity {
 ActivityLoginBinding binding;
 String mail,password;
+SharedPreferences insertdata;
+SharedPreferences.Editor editor;
 Activity activity;
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
@@ -36,18 +39,26 @@ Activity activity;
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
-                if(apiStatus==APIStatus.SUCCESS){
                     if(tag.equalsIgnoreCase("login")){
                         if(response.getBoolean("status")){
-                            JSONObject object=response.getJSONObject("");
+                            JSONObject object=response.getJSONObject("userDetails");
+                            int userid=object.getInt("data");
 
+                            editor.putInt("userid",userid);
+                            editor.commit();
+
+                            Toast.makeText(activity, "userid: "+insertdata.getInt("userid",0), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Login_Activity.this, MainActivity.class);
+                            startActivity(intent);
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                         }
+                    }else{
+                        Toast.makeText(activity, "tag error", Toast.LENGTH_SHORT).show();
                     }
-                }
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                Toast.makeText(activity, "catch error", Toast.LENGTH_SHORT).show();
+              //  throw new RuntimeException(e);
             }
         }
     };
@@ -59,36 +70,45 @@ Activity activity;
         setContentView(binding.getRoot());
         activity=this;
 
-        mail=binding.username.getText().toString();
-        password=binding.password.getText().toString();
+        insertdata= getSharedPreferences("userID",MODE_PRIVATE);
+        editor=insertdata.edit();
 
-        //onclick method
+        int userid1=insertdata.getInt("userid",0);
+       /* Toast.makeText(activity, "userid: "+userid1, Toast.LENGTH_SHORT).show();*/
+        if(userid1!=0){
+            Intent intent = new Intent(Login_Activity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
         View.OnClickListener onClickListener=new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 click(v);
+
             }
         };
 
         binding.loginbtn.setOnClickListener(onClickListener);
         binding.siginup.setOnClickListener(onClickListener);
 
+
     }
 
     public void click(View v) {
         if (v.getId() == R.id.loginbtn) {
-            Intent intent = new Intent(Login_Activity.this, MainActivity.class);
-            startActivity(intent);
+            mail=binding.username.getText().toString();
+            password=binding.password.getText().toString();
+            callapi();
         } else if (v.getId() == R.id.siginup) {
             Intent intent = new Intent(Login_Activity.this, SiginUp_Activity.class);
             startActivity(intent);
         }
     }
-
     private void callapi() {
         Map<String, String> map = new HashMap<>();
         map.put("mail", mail);
         map.put("password", password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "login", map, "login", new Bundle(), apiCallbacks);
     }
+
 }

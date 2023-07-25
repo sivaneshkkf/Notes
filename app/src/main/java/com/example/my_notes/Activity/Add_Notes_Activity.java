@@ -3,6 +3,8 @@ package com.example.my_notes.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 import com.example.my_notes.API.APICallbacks;
 import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
+import com.example.my_notes.MainActivity;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityAddNotesBinding;
@@ -22,6 +25,8 @@ import java.util.Map;
 public class Add_Notes_Activity extends AppCompatActivity {
 ActivityAddNotesBinding binding;
 Activity activity;
+SharedPreferences insertdata;
+SharedPreferences.Editor editor;
 
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
@@ -32,15 +37,14 @@ Activity activity;
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
-                if (apiStatus==APIStatus.SUCCESS){
                     if(tag.equalsIgnoreCase("createNotes")){
                         if (response.getBoolean("status")){
-                            JSONObject object=response.getJSONObject("");
+                            Intent intent=new Intent(Add_Notes_Activity.this, MainActivity.class);
+                            startActivity(intent);
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -54,6 +58,20 @@ Activity activity;
         binding = ActivityAddNotesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         activity=this;
+
+        insertdata= getSharedPreferences("userID",MODE_PRIVATE);
+        editor=insertdata.edit();
+
+        binding.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userid=String.valueOf(insertdata.getInt("userid",0));
+                Title=binding.edtTitle.getText().toString();
+                Subject=binding.edtSubject.getText().toString();
+                Desc=binding.edtNotes.getText().toString();
+                callapi();
+            }
+        });
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override

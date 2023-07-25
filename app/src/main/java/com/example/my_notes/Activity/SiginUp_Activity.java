@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.my_notes.API.APICallbacks;
 import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
+import com.example.my_notes.MainActivity;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivitySiginUpBinding;
@@ -36,16 +37,16 @@ String name,mail,password;
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
-                if(apiStatus==APIStatus.SUCCESS){
                     if(tag.equalsIgnoreCase("Registration")){
                         if(response.getBoolean("status")){
-                            JSONObject object=response.getJSONObject("");
+                            /*JSONObject object=response.getJSONObject("");*/
+                            Intent intent = new Intent( SiginUp_Activity.this, MainActivity.class);
+                            startActivity(intent);
 
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -57,17 +58,17 @@ String name,mail,password;
         binding = ActivitySiginUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mail = binding.mail.getText().toString();
-        name = binding.username.getText().toString();
-        password = binding.password.getText().toString();
+
 
 
 
         binding.createaccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( SiginUp_Activity.this,Login_Activity.class);
-                startActivity(intent);
+                mail = binding.mail.getText().toString();
+                name = binding.username.getText().toString();
+                password = binding.password.getText().toString();
+                callapi();
             }
         });
 
