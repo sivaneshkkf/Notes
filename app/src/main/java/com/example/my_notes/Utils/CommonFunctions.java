@@ -299,13 +299,6 @@ public class CommonFunctions {
     }
 
 
-    public static void setJSONArray1(JSONArray array, String name, List<JSONObject> list, RecyclerView.Adapter adapter) throws JSONException {
-        //JSONArray arrayExp = array.getJSONArray(name);
-        //list.addAll(getJSONObjectsList(arrayExp));
-       // adapter.notifyDataSetChanged();
-    }
-
-
     public static Bundle getBundle(Fragment fragment) {
         return fragment.getArguments() != null ? fragment.getArguments() : new Bundle();
     }
