@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -28,6 +29,10 @@ ActivitySiginUpBinding binding;
 Activity activity;
 
 String name,mail,password;
+
+String phone,email;
+   /* SharedPreferences insertdata;
+    SharedPreferences.Editor editor;*/
 
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
@@ -60,14 +65,12 @@ String name,mail,password;
         setContentView(binding.getRoot());
 
 
-
-
+//        email=String.valueOf(insertdata.getInt("email",0));
 
         binding.createaccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=binding.mail.getText().toString();
-                String password=binding.password.getText().toString();
+
 
                 if(binding.username.getText().toString().isEmpty()){
                     binding.username.setError("Username Field should not be empty");
@@ -83,6 +86,16 @@ String name,mail,password;
                     mail = binding.mail.getText().toString();
                     name = binding.username.getText().toString();
                     password = binding.password.getText().toString();
+                    phone = binding.phone.getText().toString();
+
+              /*      //to store data in sharedpreference
+                    insertdata= getSharedPreferences("sharedpref",MODE_PRIVATE);
+                    editor = insertdata.edit();
+                    editor.putString("email",mail);
+                    editor.putString("name",name);
+                    editor.putString("phone",phone);
+                    editor.apply();*/
+
                     callapi();
                 }
 

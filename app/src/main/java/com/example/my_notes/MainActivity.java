@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -24,13 +25,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.my_notes.API.APICallbacks;
+import com.example.my_notes.API.APIStatus;
+import com.example.my_notes.API.APPConstants;
 import com.example.my_notes.Activity.Add_Notes_Activity;
 import com.example.my_notes.Activity.Add_Task_Activity;
+import com.example.my_notes.Activity.Edit_Profile_Activity;
 import com.example.my_notes.Activity.Login_Activity;
 import com.example.my_notes.Fragment.Notes_Fragment;
 import com.example.my_notes.Fragment.Task_Fragment;
 
 import com.example.my_notes.Utils.DialogUtils;
+import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityMainBinding;
 import com.example.my_notes.databinding.HeaderMenuBinding;
 import com.example.my_notes.databinding.PopupSelectionBinding;
@@ -39,13 +45,19 @@ import com.google.android.material.navigation.NavigationView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     Activity activity;
 
     HeaderMenuBinding headerMenuBinding;
+    String userid,name,mail,userregId;
 
     Notes_Fragment notes_fragment = new Notes_Fragment();
     Task_Fragment task_fragment = new Task_Fragment();
@@ -54,7 +66,47 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences insertdata;
     SharedPreferences.Editor editor;
+
+//    SharedPreferences sharedPreferences;
     AlertDialog popup;
+
+
+    APICallbacks apiCallbacks=new APICallbacks() {
+        @Override
+        public void taskProgress(String tag, int progress, Bundle bundle) {
+
+        }
+
+        @Override
+        public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
+            try {
+                if(tag.equalsIgnoreCase("viewProfile")){
+                    if (response.getBoolean("status")){
+                        JSONObject object=response.getJSONObject("msg");
+                        name = object.getString("username");
+                        mail = object.getString("useremail");
+                        userregId = object.getString("Regid");
+
+                        //for showing name in menu_nav
+                        MenuItem allnotes1=binding.navigatonView.getMenu().findItem(R.id.nav_mail);
+                        allnotes1.setTitle(mail);
+
+                        MenuItem allnotes2=binding.navigatonView.getMenu().findItem(R.id.nav_id);
+                        allnotes2.setTitle("UserID:"+userregId);
+
+                        //for showing header username
+                        TextView textView = binding.navigatonView.getHeaderView(0).findViewById(R.id.nav_header_name);
+                        textView.setText(name);
+
+                    }else{
+                        Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         activity=this;
+
 
         //for popup view
         popupBinding = PopupSelectionBinding.inflate(getLayoutInflater());
@@ -73,7 +126,19 @@ public class MainActivity extends AppCompatActivity {
 
 //  Shared preference
         insertdata= getSharedPreferences("img",MODE_PRIVATE);
+        insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor=insertdata.edit();
+        userid = String.valueOf(insertdata.getInt("userid", 0));
+        Toast.makeText(activity, "userid"+userid, Toast.LENGTH_SHORT).show();
+        callapi();
+
+//        sharedPreferences = getSharedPreferences("sharedpref", Context.MODE_PRIVATE);
+
+        MenuItem allnotes=binding.navigatonView.getMenu().findItem(R.id.nav_notes);
+        allnotes.setTitle("All Notes :    "+0);
+
+//        headerMenuBinding.navHeaderName.setText("adith");
+
 
 
 
@@ -88,6 +153,13 @@ public class MainActivity extends AppCompatActivity {
                 binding.drawerlayout.openDrawer(GravityCompat.START); // Open the side navigation drawer
 
             }
+        });
+
+        binding.user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Edit_Profile_Activity.class);
+                startActivity(intent);            }
         });
 
         popupBinding.popNotesTxt.setOnClickListener(new View.OnClickListener() {
@@ -160,8 +232,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MenuItem allnotes=binding.navigatonView.getMenu().findItem(R.id.nav_notes);
-        allnotes.setTitle("All Notes :    "+0);
+
 
 
         binding.navigatonView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -206,5 +277,13 @@ public class MainActivity extends AppCompatActivity {
                 Exception error = result.getError();
             }
         }
+    }
+
+    public void callapi(){
+        Map<String,String> map=new HashMap<>();
+
+        map.put("userid",userid);
+
+        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"viewProfile",map,"viewProfile",new Bundle(),apiCallbacks);
     }
 }

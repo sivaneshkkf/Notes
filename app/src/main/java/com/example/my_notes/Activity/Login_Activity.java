@@ -42,7 +42,7 @@ public class Login_Activity extends AppCompatActivity {
                 if (tag.equalsIgnoreCase("login")) {
                     if (response.getBoolean("status")) {
                         JSONObject object = response.getJSONObject("userDetails");
-                        int userid = object.getInt("data");
+                        int userid = object.getInt("userid");
 
                         editor.putInt("userid", userid);
                         editor.commit();

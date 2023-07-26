@@ -14,9 +14,9 @@
 
         </item>
         <item
-            android:id="@+id/nav_phone"
-            android:icon="@drawable/icon_phone"
-            android:title="Phone">
+            android:id="@+id/nav_id"
+            android:icon="@drawable/personalcard"
+            android:title="reg_id">
 
         </item>
         <item
