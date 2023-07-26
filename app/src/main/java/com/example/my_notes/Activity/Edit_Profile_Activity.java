@@ -61,8 +61,6 @@ ActivityEditProfileBinding binding;
                         binding.mail.setText(mail);
                         binding.password.setText(password);
                         binding.confirmPassword.setText(password);
-
-
                     }else{
                         Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                     }

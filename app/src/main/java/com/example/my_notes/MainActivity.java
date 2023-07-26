@@ -144,8 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        sharedPreferences = getSharedPreferences("sharedpref", Context.MODE_PRIVATE);
 
-        MenuItem allnotes=binding.navigatonView.getMenu().findItem(R.id.nav_notes);
-        allnotes.setTitle("All Notes :    "+0);
+
 
 
 
