@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.my_notes.Utils.OnItemViewClickListener;
 import com.example.my_notes.databinding.RecyclerNotesBinding;
 import com.example.my_notes.databinding.RecyclerTaskBinding;
 
@@ -19,11 +20,15 @@ import java.util.List;
 
 public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolder> {
     Context context;
+//    ArrayList<String> list;
     List<JSONObject> list;
 
-    public Task_Adapter(Context context, List<JSONObject> list) {
+    OnItemViewClickListener onItemViewClickListener;
+
+    public Task_Adapter(Context context, List<JSONObject> list, OnItemViewClickListener onItemViewClickListener) {
         this.context = context;
         this.list = list;
+        this.onItemViewClickListener=onItemViewClickListener;
     }
 
     @NonNull
@@ -37,14 +42,16 @@ public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolde
     @Override
     public void onBindViewHolder(@NonNull AppViewHolder holder, int position) {
 
+//        holder.binding.titleTxt.setText(list.get(position));
 
         JSONObject object = list.get(position);
 
         try {
-            holder.binding.titleTxt.setText(object.getString("title"));
+            holder.binding.titleTxt.setText(object.getString("Title"));
             // holder.binding.tvMail.setText(object.getString("CustomerEmail"));
-            holder.binding.subjectTxt.setText(object.getString("Subject"));
+            holder.binding.subjectTxt.setText(object.getString("subject"));
             holder.binding.task.setText(object.getString("description"));
+
 
 
         } catch (JSONException e) {

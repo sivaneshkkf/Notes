@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,30 +34,9 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
     Activity activity;
 //    ArrayList<String> lists;
     List<JSONObject> list;
-    ArrayList<Integer> notesidlist=new ArrayList<>();
-    private String notesid;
+
 
     OnItemViewClickListener onItemViewClickListener;
-
-    APICallbacks apiCallbacks=new APICallbacks() {
-        @Override
-        public void taskProgress(String tag, int progress, Bundle bundle) {
-
-        }
-
-        @Override
-        public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
-            try {
-                if(tag.equalsIgnoreCase("deleteNotes")){
-                    if(response.getBoolean("status")){
-
-                    }
-                }
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    };
 
     public Notes_Adapter(Activity activity, List<JSONObject> list,OnItemViewClickListener onItemViewClickListener) {
         this.activity = activity;
@@ -86,7 +66,6 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
             // holder.binding.tvMail.setText(object.getString("CustomerEmail"));
             holder.binding.subjectTxt.setText(object.getString("subject"));
             holder.binding.notes.setText(object.getString("description"));
-            notesidlist.add(object.getInt("notesid"));
 
         } catch (JSONException e) {
 
@@ -101,9 +80,6 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                notesid=String.valueOf(notesidlist.get(pos));
-                callapi();
-                notifyDataSetChanged();
             }
         });
     }
@@ -123,10 +99,4 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
         }
     }
 
-    public void callapi(){
-        Map<String,String> map=new HashMap<>();
-        map.put("notesid",notesid);
-
-        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"deleteNotes",map,"deleteNotes",new Bundle(),apiCallbacks);
-    }
 }
