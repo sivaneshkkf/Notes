@@ -52,7 +52,7 @@
                android:layout_gravity="center"
                android:gravity="left"
                android:textStyle="bold"
-               android:text="UserName">
+               android:text="Mail ID">
 
            </TextView>
            <EditText
@@ -62,8 +62,7 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textSize="14sp"
-               android:background="@drawable/background"
-               android:backgroundTint="@color/text_box_colour"
+               android:background="@drawable/edit_text_background"
                android:drawablePadding="10dp"
                android:padding="10dp"
                android:hint="Enter your Username"
@@ -89,15 +88,11 @@
                android:id="@+id/pass"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               app:endIconMode="password_toggle"
-               app:endIconTint="#000000"
                app:hintTextColor="@color/black"
                android:textSize="14sp"
-               app:errorTextAppearance="?android:attr/textAppearanceSmall"
-               app:hintAnimationEnabled="false"
-               android:animateLayoutChanges="false"
-               app:boxBackgroundMode="none"
-               app:startIconTint="#000000">
+               app:passwordToggleEnabled="true"
+               app:passwordToggleTint="#000000"
+               app:boxBackgroundMode="none">
 
                <EditText
                    android:id="@+id/password"
@@ -105,17 +100,23 @@
                    android:layout_marginBottom="20dp"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:background="@drawable/background"
-                   android:backgroundTint="@color/text_box_colour"
+                   android:background="@drawable/edit_text_background"
                    android:textSize="14sp"
                    android:hint="Please Enter your password"
                    android:textColor="@color/black"
                    android:paddingHorizontal="10dp"
                    android:paddingVertical="10dp"
                    android:textColorHint="@color/black">
-
                </EditText>
            </com.google.android.material.textfield.TextInputLayout>
+<!--           <TextView-->
+<!--               android:id="@+id/error"-->
+<!--               android:layout_width="match_parent"-->
+<!--               android:layout_height="wrap_content"-->
+<!--               android:textSize="12sp"-->
+<!--               android:textColor="@color/red"-->
+<!--               android:text="error"-->
+<!--               android:fontFamily="@font/poppins_semibold600"/>-->
 
            <TextView
                android:id="@+id/loginbtn"
@@ -166,6 +167,22 @@
 
 
        </LinearLayout>
+
+       <ProgressBar
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:visibility="gone"
+           android:id="@+id/progress_circular"/>
+
+       <com.airbnb.lottie.LottieAnimationView
+           android:id="@+id/tick"
+           android:layout_width="60dp"
+           android:layout_gravity="center"
+           android:visibility="gone"
+           android:layout_height="60dp"
+           app:lottie_rawRes="@raw/animation"
+           app:lottie_autoPlay="true"
+           app:lottie_loop="false"/>
    </LinearLayout>
 
 </LinearLayout>

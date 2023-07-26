@@ -74,5 +74,7 @@ dependencies {
     implementation 'io.github.chaosleung:pinview:1.4.4'
 
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+// lottifile
+    implementation "com.airbnb.android:lottie:3.7.0"
 
 }

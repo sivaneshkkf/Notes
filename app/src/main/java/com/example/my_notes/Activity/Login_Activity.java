@@ -3,9 +3,13 @@ package com.example.my_notes.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +21,7 @@ import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityLoginBinding;
 import com.example.my_notes.databinding.ActivitySplashBinding;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,26 +43,32 @@ public class Login_Activity extends AppCompatActivity {
 
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
+            binding.progressCircular.setVisibility(View.GONE);
             try {
                 if (tag.equalsIgnoreCase("login")) {
                     if (response.getBoolean("status")) {
+
+                        binding.tick.setVisibility(View.VISIBLE);
                         JSONObject object = response.getJSONObject("userDetails");
                         int userid = object.getInt("userid");
 
                         editor.putInt("userid", userid);
                         editor.commit();
+                        Handler handler=new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent(Login_Activity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                        },1500);
 
-                        Toast.makeText(activity, "userid: " + insertdata.getInt("userid", 0), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Login_Activity.this, MainActivity.class);
-                        startActivity(intent);
                     } else {
-                        Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Please enter valid uername and password", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(activity, "tag error", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
-                Toast.makeText(activity, "catch error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Please enter valid uername and password", Toast.LENGTH_SHORT).show();
                 //  throw new RuntimeException(e);
             }
         }
@@ -80,16 +91,38 @@ public class Login_Activity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        binding.password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()!=0){
+                    binding.pass.setPasswordVisibilityToggleEnabled(true);
+                }
+            }
+        });
+
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (binding.username.getText().toString().isEmpty()){
                     binding.username.setError("Invalid Username");
                 }else if(binding.password.getText().toString().isEmpty()){
-                    binding.pass.setError("Invalid Password");
+                    binding.pass.setEndIconMode(TextInputLayout.END_ICON_NONE);
+                    binding.password.setError("Invalid Password");
+
                 }else {
                     mail = binding.username.getText().toString();
                     password = binding.password.getText().toString();
+                    binding.progressCircular.setVisibility(View.VISIBLE);
                     callapi();
                 }
             }
