@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Title"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:textColor="@color/blue"
                 android:textSize="18sp"
@@ -39,18 +40,18 @@
 
                 <ImageView
                     android:id="@+id/edit"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+
                     android:src="@drawable/icon_edit" />
 
                 <ImageView
                     android:id="@+id/delete"
-                    android:layout_width="20dp"
-                    android:layout_weight="1"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="10dp"
+
                     android:src="@drawable/icon_delete" />
 
             </LinearLayout>

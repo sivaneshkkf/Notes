@@ -3,6 +3,7 @@ package com.example.my_notes.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import com.example.my_notes.API.APICallbacks;
 import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
+import com.example.my_notes.MainActivity;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityEditTaskBinding;
@@ -34,16 +36,14 @@ ActivityEditTaskBinding binding;
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
-                if(apiStatus==APIStatus.SUCCESS){
                     if(tag.equalsIgnoreCase("updateTask")){
                         if(response.getBoolean("status")){
-                            JSONObject object=response.getJSONObject("");
-
+                            Intent intent=new Intent(Edit_Task_Activity.this, MainActivity.class);
+                            startActivity(intent);
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -55,13 +55,27 @@ ActivityEditTaskBinding binding;
         binding = ActivityEditTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        title = binding.edtTitle.getText().toString();
-        subject = binding.edtSubject.getText().toString();
-        desc = binding.edtTask.getText().toString();
+        Bundle bundle=getIntent().getExtras();
 
+        binding.edtTitle.setText(bundle.getString("title"));
+        binding.edtSubject.setText(bundle.getString("subject"));
+        binding.edtTask.setText(bundle.getString("description"));
+
+
+        binding.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                title = binding.edtTitle.getText().toString();
+                subject = binding.edtSubject.getText().toString();
+                desc = binding.edtTask.getText().toString();
+                callapi();
+            }
+        });
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(Edit_Task_Activity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
