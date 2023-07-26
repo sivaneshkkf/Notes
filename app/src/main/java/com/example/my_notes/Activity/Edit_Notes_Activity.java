@@ -68,10 +68,20 @@ ActivityEditNotesBinding binding;
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title = binding.edtTitle.getText().toString();
-                subject = binding.edtSubject.getText().toString();
-                desc = binding.edtNotes.getText().toString();
-                callapi();
+
+                if (binding.edtTitle.getText().toString().isEmpty()){
+                    binding.edtTitle.setError("the required field should not be empty");
+                } else if (binding.edtSubject.getText().toString().isEmpty()) {
+                    binding.edtSubject.setError("the required field should not be empty");
+                }else if (binding.edtNotes.getText().toString().isEmpty()) {
+                    binding.edtNotes.setError("the required field should not be empty");
+                }else {
+                    title = binding.edtTitle.getText().toString();
+                    subject = binding.edtSubject.getText().toString();
+                    desc = binding.edtNotes.getText().toString();
+                    callapi();
+                }
+
             }
         });
 

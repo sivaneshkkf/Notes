@@ -65,11 +65,21 @@ SharedPreferences.Editor editor;
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userid=String.valueOf(insertdata.getInt("userid",0));
-                Title=binding.edtTitle.getText().toString();
-                Subject=binding.edtSubject.getText().toString();
-                Desc=binding.edtNotes.getText().toString();
-                callapi();
+
+                if (binding.edtTitle.getText().toString().isEmpty()){
+                    binding.edtTitle.setError("the required field should not be empty");
+                } else if (binding.edtSubject.getText().toString().isEmpty()) {
+                    binding.edtSubject.setError("the required field should not be empty");
+                }else if (binding.edtNotes.getText().toString().isEmpty()) {
+                    binding.edtNotes.setError("the required field should not be empty");
+                }else {
+                    userid=String.valueOf(insertdata.getInt("userid",0));
+                    Title=binding.edtTitle.getText().toString();
+                    Subject=binding.edtSubject.getText().toString();
+                    Desc=binding.edtNotes.getText().toString();
+                    callapi();
+                }
+
             }
         });
 
