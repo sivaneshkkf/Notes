@@ -1,6 +1,7 @@
 package com.example.my_notes.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.example.my_notes.API.APICallbacks;
 import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
+import com.example.my_notes.Activity.Edit_Notes_Activity;
 import com.example.my_notes.Adapter.Notes_Adapter;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.CommonFunctions;
@@ -41,6 +43,10 @@ public class Notes_Fragment extends Fragment {
     FragmentNotesBinding binding;
     AlertDialog dialogLoading;
     ArrayList<Integer> notesidlist=new ArrayList<>();
+
+    ArrayList<String> titleList=new ArrayList<>();
+    ArrayList<String> subjectList=new ArrayList<>();
+    ArrayList<String> notesList=new ArrayList<>();
     private String notesid;
 
     String userID = "";
@@ -67,11 +73,17 @@ public class Notes_Fragment extends Fragment {
                     if (response.getBoolean("status")) {
                         list.clear();
                         notesidlist.clear();
+                        titleList.clear();
+                        subjectList.clear();
+                        notesList.clear();
                         JSONArray array=response.getJSONArray("msg");
 
                         for(int i=0;i<array.length();i++){
                             JSONObject object=array.getJSONObject(i);
                             notesidlist.add(object.getInt("notesid"));
+                            titleList.add(object.getString("title"));
+                            subjectList.add(object.getString("subject"));
+                            notesList.add(object.getString("description"));
                         }
                         CommonFunctions.setJSONArray(response, "msg", list, notes_adapter);
 
@@ -111,7 +123,7 @@ public class Notes_Fragment extends Fragment {
         insertdata = getContext().getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor = insertdata.edit();
         userID = String.valueOf(insertdata.getInt("userid", 0));
-       /* Toast.makeText(getActivity(), "userid: " + userID, Toast.LENGTH_SHORT).show();*/
+
 
         callapi();
 
@@ -126,6 +138,15 @@ public class Notes_Fragment extends Fragment {
                     deletenoteApi();
                     notes_adapter.notifyDataSetChanged();
                     callapi();
+                } else if ((v.getId() == R.id.edit)) {
+                    notesid = String.valueOf(notesidlist.get(i));
+                    Intent intent = new Intent(getActivity(), Edit_Notes_Activity.class);
+                    intent.putExtra("notesid",notesid);
+                    intent.putExtra("title",titleList.get(i));
+                    intent.putExtra("subject",subjectList.get(i));
+                    intent.putExtra("description",notesList.get(i));
+
+                    startActivity(intent);
                 }
             }
         });

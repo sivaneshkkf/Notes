@@ -82,6 +82,17 @@ public class Notes_Adapter extends RecyclerView.Adapter<Notes_Adapter.AppViewHol
                 }
             }
         });
+
+        holder.binding.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    onItemViewClickListener.onClick(v,holder.getAdapterPosition());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @Override

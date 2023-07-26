@@ -57,6 +57,19 @@ public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolde
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        holder.binding.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    onItemViewClickListener.onClick(v,holder.getAdapterPosition());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+
     }
 
     @Override
