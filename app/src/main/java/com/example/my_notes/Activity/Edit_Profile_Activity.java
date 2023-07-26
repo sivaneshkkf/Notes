@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ import com.example.my_notes.MainActivity;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityEditProfileBinding;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +37,7 @@ ActivityEditProfileBinding binding;
     SharedPreferences insertdata;
     SharedPreferences.Editor editor;
     String userid,name,mail,userregId,password;
+
 
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
@@ -87,12 +92,22 @@ ActivityEditProfileBinding binding;
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         activity=this;
-
+        insertdata= getSharedPreferences("img",MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor=insertdata.edit();
         userid = String.valueOf(insertdata.getInt("userid", 0));
-
+        Uri uri=Uri.parse(insertdata.getString("propic",""));
+        binding.profileimg.setImageURI(uri);
         callapi();
+
+        binding.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .start(Edit_Profile_Activity.this);
+            }
+        });
 
 
         binding.save.setOnClickListener(new View.OnClickListener() {
@@ -136,4 +151,24 @@ ActivityEditProfileBinding binding;
         map.put("password",password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"UpdateProfile",map,"UpdateProfile",new Bundle(),apiCallbacks);
     }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+
+                editor.putString("propic",resultUri.toString());
+                editor.commit();
+                Uri uri=Uri.parse(insertdata.getString("propic",""));
+                binding.profileimg.setImageURI(uri);
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
 }

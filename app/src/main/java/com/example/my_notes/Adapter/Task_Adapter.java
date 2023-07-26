@@ -47,7 +47,7 @@ public class Task_Adapter extends RecyclerView.Adapter<Task_Adapter.AppViewHolde
         JSONObject object = list.get(position);
 
         try {
-            holder.binding.titleTxt.setText(object.getString("Title"));
+            holder.binding.titleTxt.setText(object.getString("title"));
             // holder.binding.tvMail.setText(object.getString("CustomerEmail"));
             holder.binding.subjectTxt.setText(object.getString("subject"));
             holder.binding.task.setText(object.getString("description"));

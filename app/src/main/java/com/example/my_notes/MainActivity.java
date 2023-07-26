@@ -128,16 +128,25 @@ public class MainActivity extends AppCompatActivity {
         insertdata= getSharedPreferences("img",MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor=insertdata.edit();
+
         userid = String.valueOf(insertdata.getInt("userid", 0));
-        Toast.makeText(activity, "userid"+userid, Toast.LENGTH_SHORT).show();
+
+        ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.profileimg);
+        Uri uri=Uri.parse(insertdata.getString("propic",""));
+        image.setImageURI(uri);
+
+//        Toast.makeText(activity, "userid"+userid, Toast.LENGTH_SHORT).show();
+
+
         callapi();
+
+
 
 //        sharedPreferences = getSharedPreferences("sharedpref", Context.MODE_PRIVATE);
 
         MenuItem allnotes=binding.navigatonView.getMenu().findItem(R.id.nav_notes);
         allnotes.setTitle("All Notes :    "+0);
 
-//        headerMenuBinding.navHeaderName.setText("adith");
 
 
 
@@ -221,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.edit);
+       /* ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.edit);
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(MainActivity.this);
             }
-        });
+        });*/
 
 
 
@@ -258,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+/*
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -277,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
                 Exception error = result.getError();
             }
         }
-    }
+    }*/
 
     public void callapi(){
         Map<String,String> map=new HashMap<>();
