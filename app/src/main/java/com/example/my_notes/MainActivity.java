@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.my_notes.Activity.Add_Notes_Activity;
 import com.example.my_notes.Activity.Add_Task_Activity;
+import com.example.my_notes.Activity.Login_Activity;
 import com.example.my_notes.Fragment.Notes_Fragment;
 import com.example.my_notes.Fragment.Task_Fragment;
 
@@ -119,6 +120,16 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.getMenu().getItem(0).setChecked(true);
 
         //for barrom navigationbar function
+
+        Intent intent=getIntent();
+        if(intent.getStringExtra("activity")!=null){
+            if(intent.getStringExtra("activity").equals("Add_Task_Activity")
+                    || intent.getStringExtra("activity").equals("Edit_Task_Activity")){
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_home, task_fragment).commit();
+            }
+        }
+
+
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -152,10 +163,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItem allnotes=binding.navigatonView.getMenu().findItem(R.id.nav_notes);
         allnotes.setTitle("All Notes :    "+0);
 
-       /* NavigationView navigationView = findViewById(R.id.navigatonView);
-        View customDrawerContent = getLayoutInflater().inflate(R.layout., navigationView, false);
-        navigationView.addView(customDrawerContent);*/
-
 
         binding.navigatonView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -168,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.nav_notes) {
                     return true;
+                }else if(item.getItemId()==R.id.logout){
+                    deleteSharedPreferences("userID");
+                    Intent intent=new Intent(MainActivity.this, Login_Activity.class);
+                    startActivity(intent);
                 }
                 return true;
             }
@@ -184,13 +195,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
 
-
-               /* editor.putString("propic",resultUri.toString());
-                editor.commit();*/
-                /*Uri uri=Uri.parse(insertdata.getString("propic",""));*/
-
                 ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.profileimg);
-
 
                 editor.putString("propic",resultUri.toString());
                 editor.commit();

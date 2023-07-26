@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -65,10 +66,26 @@ String name,mail,password;
         binding.createaccBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mail = binding.mail.getText().toString();
-                name = binding.username.getText().toString();
-                password = binding.password.getText().toString();
-                callapi();
+                String email=binding.mail.getText().toString();
+                String password=binding.password.getText().toString();
+
+                if(binding.username.getText().toString().isEmpty()){
+                    binding.username.setError("Username Field should not be empty");
+                }else if(binding.mail.getText().toString().isEmpty() && !isValidEmail(email)){
+                    binding.mail.setError("Invalid Password");
+                }else if(binding.phone.getText().toString().length()<10){
+                    binding.phone.setError("Invalid phone number");
+                }else if(binding.password.getText().toString().length()<6){
+                    binding.password.setError("Password should contains 6 characters");
+                }else if(binding.confirmPassword.getText().toString().length()<6 && binding.confirmPassword.getText().toString().equals(password)){
+                    binding.confirmPassword.setError("Confirm Password and password must be same");
+                }else{
+                    mail = binding.mail.getText().toString();
+                    name = binding.username.getText().toString();
+                    password = binding.password.getText().toString();
+                    callapi();
+                }
+
             }
         });
 
@@ -86,6 +103,9 @@ String name,mail,password;
         map.put("email",mail);
         map.put("password",password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "Registration", map, "Registration", new Bundle(), apiCallbacks);
+    }
+    private boolean isValidEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 }

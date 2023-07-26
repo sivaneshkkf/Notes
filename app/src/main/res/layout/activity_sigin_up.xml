@@ -171,6 +171,49 @@
 
             </EditText>
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_marginBottom="10dp"
+            android:drawableLeft="@drawable/icon_password"
+            android:drawablePadding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Confirm Password">
+
+        </TextView>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            app:endIconTint="#000000"
+            app:hintTextColor="@color/black"
+            android:textSize="14sp"
+            app:hintAnimationEnabled="false"
+            android:animateLayoutChanges="false"
+
+            app:boxBackgroundMode="none"
+            app:startIconTint="#000000">
+
+            <EditText
+                android:id="@+id/confirm_password"
+                android:inputType="textPassword"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background"
+                android:backgroundTint="@color/text_box_colour"
+                android:textSize="14sp"
+                android:hint="Please Enter your password"
+                android:textColor="@color/black"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:textColorHint="@color/black">
+
+            </EditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/createacc_btn"

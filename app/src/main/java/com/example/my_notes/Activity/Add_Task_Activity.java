@@ -26,9 +26,9 @@ import java.util.Map;
 public class Add_Task_Activity extends AppCompatActivity {
 ActivityAddTaskBinding binding;
     Activity activity;
-    String userId,title,subject,desc;
-    SharedPreferences insertdata;
+    SharedPreferences insertData;
     SharedPreferences.Editor editor;
+    String userId,title,subject,desc;
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
         public void taskProgress(String tag, int progress, Bundle bundle) {
@@ -38,17 +38,16 @@ ActivityAddTaskBinding binding;
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
-
                     if(tag.equalsIgnoreCase("createTask")){
                         if(response.getBoolean("status")){
                             Intent intent=new Intent(Add_Task_Activity.this, MainActivity.class);
+                            intent.putExtra("activity","Add_Task_Activity");
                             startActivity(intent);
-                            Toast.makeText(activity, "saved successfully", Toast.LENGTH_SHORT).show();
+
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                         }
                     }
-
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -61,27 +60,17 @@ ActivityAddTaskBinding binding;
         setContentView(binding.getRoot());
 
 
-        insertdata= getSharedPreferences("userID",MODE_PRIVATE);
-        editor=insertdata.edit();
+        insertData=getSharedPreferences("userID",MODE_PRIVATE);
+        editor=insertData.edit();
 
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (binding.edtTitle.getText().toString().isEmpty()){
-                    binding.edtTitle.setError("the required field should not be empty");
-                } else if (binding.edtSubject.getText().toString().isEmpty()) {
-                    binding.edtSubject.setError("the required field should not be empty");
-                }else if (binding.edtTask.getText().toString().isEmpty()) {
-                    binding.edtTask.setError("the required field should not be empty");
-                }else {
-                    userId=String.valueOf(insertdata.getInt("userid",0));
-                    title = binding.edtTitle.getText().toString();
-                    subject = binding.edtSubject.getText().toString();
-                    desc = binding.edtTask.getText().toString();
-                    callapi();
-                }
-
+                userId=String.valueOf(insertData.getInt("userid",0));
+                title = binding.edtTitle.getText().toString();
+                subject = binding.edtSubject.getText().toString();
+                desc = binding.edtTask.getText().toString();
+                callapi();
             }
         });
 

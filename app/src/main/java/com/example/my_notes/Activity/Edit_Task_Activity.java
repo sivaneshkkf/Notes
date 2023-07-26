@@ -39,6 +39,7 @@ ActivityEditTaskBinding binding;
                     if(tag.equalsIgnoreCase("updateTask")){
                         if(response.getBoolean("status")){
                             Intent intent=new Intent(Edit_Task_Activity.this, MainActivity.class);
+                            intent.putExtra("activity","Edit_Task_Activity");
                             startActivity(intent);
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
@@ -65,19 +66,11 @@ ActivityEditTaskBinding binding;
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (binding.edtTitle.getText().toString().isEmpty()){
-                    binding.edtTitle.setError("the required field should not be empty");
-                } else if (binding.edtSubject.getText().toString().isEmpty()) {
-                    binding.edtSubject.setError("the required field should not be empty");
-                }else if (binding.edtTask.getText().toString().isEmpty()) {
-                    binding.edtTask.setError("the required field should not be empty");
-                }else {
-                    title = binding.edtTitle.getText().toString();
-                    subject = binding.edtSubject.getText().toString();
-                    desc = binding.edtTask.getText().toString();
-                    callapi();
-                }
-
+                taskId=String.valueOf(bundle.getInt("taskid"));
+                title = binding.edtTitle.getText().toString();
+                subject = binding.edtSubject.getText().toString();
+                desc = binding.edtTask.getText().toString();
+                callapi();
             }
         });
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
