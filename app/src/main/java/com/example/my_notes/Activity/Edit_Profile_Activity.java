@@ -1,5 +1,7 @@
 package com.example.my_notes.Activity;
 
+import static com.example.my_notes.Utils.InputValidator.isValidEmail;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -8,9 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.example.my_notes.MainActivity;
 import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityEditProfileBinding;
+import com.google.android.material.textfield.TextInputLayout;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -35,9 +39,10 @@ ActivityEditProfileBinding binding;
     Activity activity;
 
     SharedPreferences insertdata;
+
+    String email,password1;
     SharedPreferences.Editor editor;
     String userid,name,mail,userregId,password;
-
 
     APICallbacks apiCallbacks=new APICallbacks() {
         @Override
@@ -90,12 +95,18 @@ ActivityEditProfileBinding binding;
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         activity=this;
+
+       /* insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
+        editor=insertdata.edit();
+        userid = String.valueOf(insertdata.getInt("userid", 0));*/
+
         insertdata= getSharedPreferences("img",MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor=insertdata.edit();
         userid = String.valueOf(insertdata.getInt("userid", 0));
         Uri uri=Uri.parse(insertdata.getString("propic",""));
         binding.profileimg.setImageURI(uri);
+
         callapi();
 
         binding.edit.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +116,73 @@ ActivityEditProfileBinding binding;
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .start(Edit_Profile_Activity.this);
             }
+         });
+
+
+
+        binding.password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()!=0){
+                    binding.pass.setPasswordVisibilityToggleEnabled(true);
+                }else{
+                    password1=s.toString();
+                }
+            }
+        });
+
+
+        binding.confirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length()!=0){
+                    binding.confirmPass.setPasswordVisibilityToggleEnabled(true);
+                }
+            }
+        });
+
+
+        binding.mail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String email = s.toString().trim();
+                if (!email.isEmpty() && !isValidEmail(email)) {
+                    binding.mail.setError("Invalid email address");
+                } else {
+                    binding.mail.setError(null);
+                    email=s.toString();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
 
 
@@ -112,7 +190,7 @@ ActivityEditProfileBinding binding;
             @Override
             public void onClick(View v) {
 
-                if(binding.username.getText().toString().isEmpty()){
+                /*if(binding.username.getText().toString().isEmpty()){
                     binding.username.setError("Username Field should not be empty");
                 }else if(binding.mail.getText().toString().isEmpty()){
                     binding.mail.setError("Invalid Password");
@@ -126,14 +204,39 @@ ActivityEditProfileBinding binding;
                     password = binding.password.getText().toString();
 
                     updateprofilecallapi();
+                }*/
+
+                if(binding.username.getText().toString().isEmpty()){
+                    binding.username.setError("Username Field should not be empty");
+                }else if (binding.mail.getText().toString().isEmpty() || isValidEmail(email)) {
+                    binding.mail.setError("Invalid Mail ID");
+                }else if(binding.password.getText().toString().length()<6){
+                    binding.pass.setEndIconMode(TextInputLayout.END_ICON_NONE);
+                    binding.password.setError("Password should contains 6 characters");
+                }else if(binding.confirmPassword.getText().toString().length()<6 || binding.confirmPassword.getText().toString().equals(password1)){
+                    binding.confirmPass.setEndIconMode(TextInputLayout.END_ICON_NONE);
+                    binding.confirmPassword.setError("Confirm Password and password must be same");
+                }else{
+                    mail = binding.mail.getText().toString();
+                    name = binding.username.getText().toString();
+                    password = binding.password.getText().toString();
+                    updateprofilecallapi();
                 }
 
             }
         });
 
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(activity, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
-    public void callapi(){
+        public void callapi(){
         Map<String,String> map=new HashMap<>();
 
         map.put("userid",userid);
@@ -149,8 +252,6 @@ ActivityEditProfileBinding binding;
         map.put("password",password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"UpdateProfile",map,"UpdateProfile",new Bundle(),apiCallbacks);
     }
-
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -158,9 +259,9 @@ ActivityEditProfileBinding binding;
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
 
-                editor.putString("propic",resultUri.toString());
+                editor.putString("propic", resultUri.toString());
                 editor.commit();
-                Uri uri=Uri.parse(insertdata.getString("propic",""));
+                Uri uri = Uri.parse(insertdata.getString("propic", ""));
                 binding.profileimg.setImageURI(uri);
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -169,4 +270,10 @@ ActivityEditProfileBinding binding;
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(activity,MainActivity.class);
+        startActivity(intent);
+    }
 }

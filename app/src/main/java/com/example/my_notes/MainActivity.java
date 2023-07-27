@@ -37,6 +37,7 @@ import com.example.my_notes.Fragment.Task_Fragment;
 
 import com.example.my_notes.Utils.DialogUtils;
 import com.example.my_notes.Utils.NetworkController;
+
 import com.example.my_notes.databinding.ActivityMainBinding;
 import com.example.my_notes.databinding.HeaderMenuBinding;
 import com.example.my_notes.databinding.PopupSelectionBinding;
@@ -55,23 +56,24 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     Activity activity;
+    SharedPreferences insertdata;
+    SharedPreferences.Editor editor;
+    String userID = "";
+    String notesCount = "";
 
     HeaderMenuBinding headerMenuBinding;
-    String userid,name,mail,userregId;
+    String userid, name, mail, userregId;
 
     Notes_Fragment notes_fragment = new Notes_Fragment();
     Task_Fragment task_fragment = new Task_Fragment();
 
     PopupSelectionBinding popupBinding;
 
-    SharedPreferences insertdata;
-    SharedPreferences.Editor editor;
-
-//    SharedPreferences sharedPreferences;
+    //    SharedPreferences sharedPreferences;
     AlertDialog popup;
 
 
-    APICallbacks apiCallbacks=new APICallbacks() {
+    APICallbacks apiCallbacks = new APICallbacks() {
         @Override
         public void taskProgress(String tag, int progress, Bundle bundle) {
 
@@ -80,26 +82,41 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
             try {
-                if(tag.equalsIgnoreCase("viewProfile")){
-                    if (response.getBoolean("status")){
-                        JSONObject object=response.getJSONObject("msg");
+                if (tag.equalsIgnoreCase("viewProfile")) {
+                    if (response.getBoolean("status")) {
+                        JSONObject object = response.getJSONObject("msg");
                         name = object.getString("username");
                         mail = object.getString("useremail");
                         userregId = object.getString("Regid");
 
                         //for showing name in menu_nav
-                        MenuItem allnotes1=binding.navigatonView.getMenu().findItem(R.id.nav_mail);
+                        MenuItem allnotes1 = binding.navigatonView.getMenu().findItem(R.id.nav_mail);
                         allnotes1.setTitle(mail);
 
-                        MenuItem allnotes2=binding.navigatonView.getMenu().findItem(R.id.nav_id);
-                        allnotes2.setTitle("UserID:"+userregId);
+                        MenuItem allnotes2 = binding.navigatonView.getMenu().findItem(R.id.nav_id);
+                        allnotes2.setTitle("UserID:" + userregId);
 
                         //for showing header username
                         TextView textView = binding.navigatonView.getHeaderView(0).findViewById(R.id.nav_header_name);
                         textView.setText(name);
 
-                    }else{
+                    } else {
                         Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                if (tag.equalsIgnoreCase("notesList")) {
+                    if (response.getBoolean("status")) {
+                        notesCount = String.valueOf(response.getInt("notescount"));
+                        Toast.makeText(activity, "notes: " + notesCount, Toast.LENGTH_SHORT).show();
+                        MenuItem allnotes = binding.navigatonView.getMenu().findItem(R.id.nav_notes);
+                        allnotes.setTitle("All Notes :    " + notesCount);
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
                     }
                 }
             } catch (Exception e) {
@@ -113,41 +130,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        activity=this;
+        activity = this;
 
 
         //for popup view
         popupBinding = PopupSelectionBinding.inflate(getLayoutInflater());
-        popup= DialogUtils.getCustomAlertDialog(activity,popupBinding.getRoot());
-        popup.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(popupBinding.getRoot().getContext(),R.drawable.background));
+        popup = DialogUtils.getCustomAlertDialog(activity, popupBinding.getRoot());
+        popup.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(popupBinding.getRoot().getContext(), R.drawable.background));
         popup.getWindow().setGravity(Gravity.BOTTOM);
 
         headerMenuBinding = HeaderMenuBinding.inflate(getLayoutInflater());
 
 //  Shared preference
-        insertdata= getSharedPreferences("img",MODE_PRIVATE);
+        insertdata = getSharedPreferences("img", MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
-        editor=insertdata.edit();
+        editor = insertdata.edit();
 
         userid = String.valueOf(insertdata.getInt("userid", 0));
 
         ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.profileimg);
-        Uri uri=Uri.parse(insertdata.getString("propic",""));
+        Uri uri = Uri.parse(insertdata.getString("propic", ""));
         image.setImageURI(uri);
 
 //        Toast.makeText(activity, "userid"+userid, Toast.LENGTH_SHORT).show();
 
 
         callapi();
-
+        notesCountapi();
 
 
 //        sharedPreferences = getSharedPreferences("sharedpref", Context.MODE_PRIVATE);
-
-
-
-
-
 
 
         //to call fragments
@@ -159,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.drawerlayout.openDrawer(GravityCompat.START); // Open the side navigation drawer
-
+                binding.navigatonView.refreshDrawableState();
             }
         });
 
@@ -167,7 +179,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Edit_Profile_Activity.class);
-                startActivity(intent);            }
+                startActivity(intent);
+                finish();
+            }
         });
 
         popupBinding.popNotesTxt.setOnClickListener(new View.OnClickListener() {
@@ -201,11 +215,13 @@ public class MainActivity extends AppCompatActivity {
 
         //for barrom navigationbar function
 
-        Intent intent=getIntent();
-        if(intent.getStringExtra("activity")!=null){
-            if(intent.getStringExtra("activity").equals("Add_Task_Activity")
-                    || intent.getStringExtra("activity").equals("Edit_Task_Activity")){
+        Intent intent = getIntent();
+        if (intent.getStringExtra("activity") != null) {
+            if (intent.getStringExtra("activity").equals("Add_Task_Activity")
+                    || intent.getStringExtra("activity").equals("Edit_Task_Activity")) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_home, task_fragment).commit();
+                binding.bottomNavigation.getMenu().getItem(2).setChecked(true);
+                binding.title.setText("MY Tasks");
             }
         }
 
@@ -215,9 +231,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.bot_nav_notes) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_home, notes_fragment).commit();
+                    binding.title.setText("My Notes");
 
                 } else if (item.getItemId() == R.id.bot_nav_tasks) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frame_home, task_fragment).commit();
+                    binding.title.setText("My Tasks");
 
                 } else if (item.getItemId() == R.id.bot_nav_add) {
                     popup.show();
@@ -241,8 +259,6 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
 
-
-
         binding.navigatonView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -254,9 +270,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.nav_notes) {
                     return true;
-                }else if(item.getItemId()==R.id.logout){
+                } else if (item.getItemId() == R.id.logout) {
                     deleteSharedPreferences("userID");
-                    Intent intent=new Intent(MainActivity.this, Login_Activity.class);
+                    Intent intent = new Intent(MainActivity.this, Login_Activity.class);
                     startActivity(intent);
                 }
                 return true;
@@ -287,11 +303,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
-    public void callapi(){
-        Map<String,String> map=new HashMap<>();
+    public void callapi() {
+        Map<String, String> map = new HashMap<>();
 
-        map.put("userid",userid);
+        map.put("userid", userid);
 
-        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"viewProfile",map,"viewProfile",new Bundle(),apiCallbacks);
+        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "viewProfile", map, "viewProfile", new Bundle(), apiCallbacks);
+    }
+
+    public void notesCountapi() {
+        Map<String, String> map = new HashMap<>();
+        map.put("userid", userid);
+
+        NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "notesList", map, "notesList", new Bundle(), apiCallbacks);
     }
 }

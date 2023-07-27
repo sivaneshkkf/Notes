@@ -78,6 +78,7 @@ public class Notes_Fragment extends Fragment {
                         notesList.clear();
                         JSONArray array=response.getJSONArray("msg");
 
+
                         for(int i=0;i<array.length();i++){
                             JSONObject object=array.getJSONObject(i);
                             notesidlist.add(object.getInt("notesid"));
@@ -123,8 +124,6 @@ public class Notes_Fragment extends Fragment {
         insertdata = getContext().getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor = insertdata.edit();
         userID = String.valueOf(insertdata.getInt("userid", 0));
-
-
         callapi();
 
         notes_adapter = new Notes_Adapter(getActivity(), list, new OnItemViewClickListener() {
