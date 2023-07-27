@@ -66,7 +66,7 @@ ActivityEditTaskBinding binding;
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskId=String.valueOf(bundle.getInt("taskid"));
+                taskId=bundle.getString("taskid");
                 title = binding.edtTitle.getText().toString();
                 subject = binding.edtSubject.getText().toString();
                 desc = binding.edtTask.getText().toString();

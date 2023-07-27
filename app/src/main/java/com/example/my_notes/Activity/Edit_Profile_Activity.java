@@ -65,7 +65,6 @@ ActivityEditProfileBinding binding;
                         binding.id.setText("UserId:"+userregId);
                         binding.mail.setText(mail);
                         binding.password.setText(password);
-                        binding.confirmPassword.setText(password);
                     }else{
                         Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                     }
@@ -142,26 +141,6 @@ ActivityEditProfileBinding binding;
         });
 
 
-        binding.confirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().length()!=0){
-                    binding.confirmPass.setPasswordVisibilityToggleEnabled(true);
-                }
-            }
-        });
-
-
         binding.mail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -213,9 +192,6 @@ ActivityEditProfileBinding binding;
                 }else if(binding.password.getText().toString().length()<6){
                     binding.pass.setEndIconMode(TextInputLayout.END_ICON_NONE);
                     binding.password.setError("Password should contains 6 characters");
-                }else if(binding.confirmPassword.getText().toString().length()<6 || binding.confirmPassword.getText().toString().equals(password1)){
-                    binding.confirmPass.setEndIconMode(TextInputLayout.END_ICON_NONE);
-                    binding.confirmPassword.setError("Confirm Password and password must be same");
                 }else{
                     mail = binding.mail.getText().toString();
                     name = binding.username.getText().toString();
@@ -231,6 +207,7 @@ ActivityEditProfileBinding binding;
             public void onClick(View v) {
                 Intent intent=new Intent(activity, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -275,5 +252,6 @@ ActivityEditProfileBinding binding;
         super.onBackPressed();
         Intent intent=new Intent(activity,MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

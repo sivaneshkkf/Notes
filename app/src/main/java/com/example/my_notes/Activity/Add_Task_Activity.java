@@ -43,6 +43,7 @@ ActivityAddTaskBinding binding;
                             Intent intent=new Intent(Add_Task_Activity.this, MainActivity.class);
                             intent.putExtra("activity","Add_Task_Activity");
                             startActivity(intent);
+                            finish();
 
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
@@ -89,5 +90,11 @@ ActivityAddTaskBinding binding;
         map.put("Subject", subject);
         map.put("Desc", desc);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "createTask", map, "createTask", new Bundle(), apiCallbacks);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

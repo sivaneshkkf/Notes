@@ -219,50 +219,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:drawableLeft="@drawable/icon_password"
-                    android:drawablePadding="5dp"
-                    android:text="Confirm Password"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    android:textStyle="bold">
-
-                </TextView>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/confirmPass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:animateLayoutChanges="false"
-                    android:textSize="14sp"
-                    app:boxBackgroundMode="none"
-                    app:hintAnimationEnabled="false"
-                    app:hintTextColor="@color/black"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="#000000">
-
-                    <EditText
-                        android:id="@+id/confirm_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/background"
-                        android:backgroundTint="@color/text_box_colour"
-                        android:hint="Please Enter your password"
-                        android:inputType="textPassword"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="10dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black"
-                        android:textSize="14sp">
-
-                    </EditText>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
                     android:id="@+id/save"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

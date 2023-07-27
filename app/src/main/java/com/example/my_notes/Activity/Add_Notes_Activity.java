@@ -41,6 +41,7 @@ SharedPreferences.Editor editor;
                         if (response.getBoolean("status")){
                             Intent intent=new Intent(Add_Notes_Activity.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         }else{
                             Toast.makeText(activity, "error", Toast.LENGTH_SHORT).show();
                         }
@@ -100,5 +101,10 @@ SharedPreferences.Editor editor;
         map.put("Desc",Desc);
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"createNotes",map,"createNotes",new Bundle(),apiCallbacks);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

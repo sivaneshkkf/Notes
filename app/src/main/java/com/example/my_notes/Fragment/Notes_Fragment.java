@@ -42,12 +42,12 @@ public class Notes_Fragment extends Fragment {
 
     FragmentNotesBinding binding;
     AlertDialog dialogLoading;
-    ArrayList<Integer> notesidlist=new ArrayList<>();
-
+/*    ArrayList<Integer> notesidlist=new ArrayList<>();
     ArrayList<String> titleList=new ArrayList<>();
     ArrayList<String> subjectList=new ArrayList<>();
-    ArrayList<String> notesList=new ArrayList<>();
-    private String notesid;
+    ArrayList<String> notesList=new ArrayList<>();*/
+
+    String notesid,title,subject,notes;
 
     String userID = "";
 
@@ -72,20 +72,6 @@ public class Notes_Fragment extends Fragment {
                 if (tag.equalsIgnoreCase("notesList")) {
                     if (response.getBoolean("status")) {
                         list.clear();
-                        notesidlist.clear();
-                        titleList.clear();
-                        subjectList.clear();
-                        notesList.clear();
-                        JSONArray array=response.getJSONArray("msg");
-
-
-                        for(int i=0;i<array.length();i++){
-                            JSONObject object=array.getJSONObject(i);
-                            notesidlist.add(object.getInt("notesid"));
-                            titleList.add(object.getString("title"));
-                            subjectList.add(object.getString("subject"));
-                            notesList.add(object.getString("description"));
-                        }
                         CommonFunctions.setJSONArray(response, "msg", list, notes_adapter);
 
                     } else {
@@ -124,26 +110,30 @@ public class Notes_Fragment extends Fragment {
         insertdata = getContext().getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor = insertdata.edit();
         userID = String.valueOf(insertdata.getInt("userid", 0));
-        callapi();
+        callapi(userID);
 
         notes_adapter = new Notes_Adapter(getActivity(), list, new OnItemViewClickListener() {
             @Override
             public void onClick(View v, int i) throws JSONException {
+
+                JSONObject object=list.get(i);
+                notesid=object.getString("notesid");
+                title=object.getString("title");
+                subject=object.getString("subject");
+                notes=object.getString("description");
+
                 if (v.getId() == R.id.delete) {
                     binding.swiperefresh.setRefreshing(true);
-                    Toast.makeText(getActivity(), "array: " + notesidlist.toString(), Toast.LENGTH_SHORT).show();
-                    notesid = String.valueOf(notesidlist.get(i));
-                    Toast.makeText(getActivity(), "notesid: " + notesid, Toast.LENGTH_SHORT).show();
-                    deletenoteApi();
+                    deletenoteApi(notesid);
+                    Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
                     notes_adapter.notifyDataSetChanged();
-                    callapi();
+                    callapi(userID);
                 } else if ((v.getId() == R.id.edit)) {
-                    notesid = String.valueOf(notesidlist.get(i));
                     Intent intent = new Intent(getActivity(), Edit_Notes_Activity.class);
                     intent.putExtra("notesid",notesid);
-                    intent.putExtra("title",titleList.get(i));
-                    intent.putExtra("subject",subjectList.get(i));
-                    intent.putExtra("description",notesList.get(i));
+                    intent.putExtra("title",title);
+                    intent.putExtra("subject",subject);
+                    intent.putExtra("description",notes);
 
                     startActivity(intent);
                 }
@@ -154,20 +144,20 @@ public class Notes_Fragment extends Fragment {
         binding.swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                callapi();
+                callapi(userID);
             }
         });
 
     }
 
-    public void callapi() {
+    public void callapi(String userID) {
         Map<String, String> map = new HashMap<>();
         map.put("userid", userID);
 
         NetworkController.getInstance().callApiPost(getActivity(), APPConstants.MAIN_URL + "notesList", map, "notesList", new Bundle(), apiCallbacks);
     }
 
-    public void deletenoteApi() {
+    public void deletenoteApi(String notesid) {
         Map<String, String> map = new HashMap<>();
         map.put("notesid", notesid);
 

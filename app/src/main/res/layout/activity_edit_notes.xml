@@ -56,18 +56,18 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/LoginTextInputLayoutStyle"
+            android:theme="@style/LoginTextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:endIconMode="clear_text"
-            app:endIconTint="#000000"
-            app:hintTextColor="@color/blue"
-            app:hintAnimationEnabled="true"
+            app:boxBackgroundColor="#F8FBFB"
+            app:boxStrokeErrorColor="#FA5252"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:hint="Title"
-            app:boxBackgroundMode="none"
-            android:textColorHint="@color/black"
-            app:startIconTint="#000000">
+            app:boxBackgroundMode="outline"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/black">
 
             <EditText
                 android:id="@+id/edt_title"
@@ -75,8 +75,6 @@
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:backgroundTint="@color/text_box_colour"
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:paddingHorizontal="10dp"
@@ -88,18 +86,18 @@
 
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/LoginTextInputLayoutStyle"
+            android:theme="@style/LoginTextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:endIconMode="clear_text"
-            app:endIconTint="#000000"
-            app:hintTextColor="@color/blue"
-            app:hintAnimationEnabled="true"
+            app:boxBackgroundColor="#F8FBFB"
+            app:boxStrokeErrorColor="#FA5252"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:hint="Subject"
-            app:boxBackgroundMode="none"
-            android:textColorHint="@color/black"
-            app:startIconTint="#000000">
+            app:boxBackgroundMode="outline"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/black">
 
             <EditText
                 android:id="@+id/edt_subject"
@@ -107,8 +105,6 @@
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:backgroundTint="@color/text_box_colour"
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:paddingHorizontal="10dp"
@@ -124,26 +120,24 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/LoginTextInputLayoutStyle"
+            android:theme="@style/LoginTextInputLayoutStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:endIconMode="clear_text"
-            app:endIconTint="#000000"
-            app:hintTextColor="@color/blue"
-            app:hintAnimationEnabled="true"
+            app:boxBackgroundColor="#F8FBFB"
+            app:boxStrokeErrorColor="#FA5252"
             android:textSize="14sp"
             android:textColor="@color/black"
-            android:hint="Notes"
-            app:boxBackgroundMode="none"
-            android:textColorHint="@color/black"
-            app:startIconTint="#000000">
+            android:hint="Note"
+            app:boxBackgroundMode="outline"
+            app:hintTextColor="@color/blue"
+            android:textColorHint="@color/black">
 
             <EditText
                 android:id="@+id/edt_notes"
                 android:layout_marginBottom="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background"
-                android:backgroundTint="@color/text_box_colour"
                 android:textSize="14sp"
                 android:textColor="@color/black"
                 android:lines="10"

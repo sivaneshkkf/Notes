@@ -48,13 +48,10 @@ public class Task_Fragment extends Fragment {
 
   Task_Adapter task_adapter;
     AlertDialog dialogLoading;
-    ArrayList<Integer> taskidList=new ArrayList<>();
-    ArrayList<String> titleList=new ArrayList<>();
-    ArrayList<String> subjectList=new ArrayList<>();
-    ArrayList<String> notesList=new ArrayList<>();
-    private String taskid;
+    String taskid,title,subject,tasks;
 
     String userID = "";
+
 
     SharedPreferences insertdata;
     SharedPreferences.Editor editor;
@@ -70,24 +67,11 @@ public class Task_Fragment extends Fragment {
 
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
+            DialogUtils.dismissLoading(dialogLoading, null, binding.swiperefresh);
             try {
                 if (tag.equalsIgnoreCase("taskList")) {
                     if (response.getBoolean("status")) {
-                        DialogUtils.dismissLoading(dialogLoading, null, binding.swiperefresh);
                         list.clear();
-                        taskidList.clear();
-                        titleList.clear();
-                        subjectList.clear();
-                        notesList.clear();
-                        JSONArray array=response.getJSONArray("msg");
-
-                        for(int i=0;i<array.length();i++){
-                            JSONObject object=array.getJSONObject(i);
-                            taskidList.add(object.getInt("taskid"));
-                            titleList.add(object.getString("title"));
-                            subjectList.add(object.getString("subject"));
-                            notesList.add(object.getString("description"));
-                        }
                         CommonFunctions.setJSONArray(response, "msg", list, task_adapter);
                         task_adapter.notifyDataSetChanged();
                     } else {
@@ -133,32 +117,36 @@ public class Task_Fragment extends Fragment {
         userID = String.valueOf(insertdata.getInt("userid", 0));
         /* Toast.makeText(getActivity(), "userid: " + userID, Toast.LENGTH_SHORT).show();*/
 
-        callapi();
+        callapi(userID);
 
         task_adapter = new Task_Adapter(getActivity(), list, new OnItemViewClickListener() {
             @Override
             public void onClick(View v, int i) throws JSONException {
+                JSONObject object=list.get(i);
+                taskid=object.getString("taskid");
+                title=object.getString("title");
+                subject=object.getString("subject");
+                tasks=object.getString("description");
+
                 if (v.getId() == R.id.delete) {
                     binding.swiperefresh.setRefreshing(true);
-                    Toast.makeText(getActivity(), "array: " + taskidList.toString(), Toast.LENGTH_SHORT).show();
-                    taskid = String.valueOf(taskidList.get(i));
-                    Toast.makeText(getActivity(), "taskid: " + taskid, Toast.LENGTH_SHORT).show();
-                    deletetaskApi();
+                    deletetaskApi(taskid);
+                    Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
                     task_adapter.notifyDataSetChanged();
-                    callapi();
+                    callapi(userID);
                 }
 
                 if(v.getId()==R.id.edit){
                     Bundle bundle=new Bundle();
                     Intent intent=new Intent(getActivity(), Edit_Task_Activity.class);
-                    bundle.putString("activity","taskFragment");
-                    bundle.putInt("taskid",taskidList.get(i));
-                    bundle.putString("title",titleList.get(i));
-                    bundle.putString("subject",subjectList.get(i));
-                    bundle.putString("description",notesList.get(i));
+                    bundle.putString("taskid",taskid);
+                    bundle.putString("title",title);
+                    bundle.putString("subject",subject);
+                    bundle.putString("description",tasks);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
+                callapi(userID);
             }
         });
         binding.taskRecyclerview.setAdapter(task_adapter);
@@ -166,21 +154,21 @@ public class Task_Fragment extends Fragment {
         binding.swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                callapi();
+                callapi(userID);
             }
         });
 
 
     }
 
-    public void callapi() {
+    public void callapi(String userID) {
         Map<String, String> map = new HashMap<>();
         map.put("userid", userID);
 
         NetworkController.getInstance().callApiPost(getActivity(), APPConstants.MAIN_URL + "taskList", map, "taskList", new Bundle(), apiCallbacks);
     }
 
-    public void deletetaskApi() {
+    public void deletetaskApi(String taskid) {
         Map<String, String> map = new HashMap<>();
         map.put("taskid", taskid);
 

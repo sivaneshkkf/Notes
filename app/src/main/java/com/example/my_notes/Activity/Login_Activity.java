@@ -60,11 +60,12 @@ public class Login_Activity extends AppCompatActivity {
                             public void run() {
                                 Intent intent = new Intent(Login_Activity.this, MainActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         },1500);
 
                     } else {
-                        Toast.makeText(activity, "Please enter valid uername and password", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, ""+response.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
                 }
             } catch (JSONException e) {
@@ -89,6 +90,7 @@ public class Login_Activity extends AppCompatActivity {
         if (userid1 != 0) {
             Intent intent = new Intent(Login_Activity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
 
         binding.password.addTextChangedListener(new TextWatcher() {

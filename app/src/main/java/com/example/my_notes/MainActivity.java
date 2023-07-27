@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 if (tag.equalsIgnoreCase("notesList")) {
                     if (response.getBoolean("status")) {
                         notesCount = String.valueOf(response.getInt("notescount"));
-                        Toast.makeText(activity, "notes: " + notesCount, Toast.LENGTH_SHORT).show();
                         MenuItem allnotes = binding.navigatonView.getMenu().findItem(R.id.nav_notes);
                         allnotes.setTitle("All Notes :    " + notesCount);
 
@@ -247,18 +246,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-       /* ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.edit);
-
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(MainActivity.this);
-            }
-        });*/
-
-
         binding.navigatonView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -274,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     deleteSharedPreferences("userID");
                     Intent intent = new Intent(MainActivity.this, Login_Activity.class);
                     startActivity(intent);
+                    finish();
                 }
                 return true;
             }
@@ -282,38 +270,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-/*
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-                ImageView image = binding.navigatonView.getHeaderView(0).findViewById(R.id.profileimg);
-
-                editor.putString("propic",resultUri.toString());
-                editor.commit();
-                Uri uri=Uri.parse(insertdata.getString("propic",""));
-                image.setImageURI(uri);
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
-    }*/
-
     public void callapi() {
         Map<String, String> map = new HashMap<>();
 
-        map.put("userid", userid);
+        map.put("userid", "11");
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "viewProfile", map, "viewProfile", new Bundle(), apiCallbacks);
     }
 
     public void notesCountapi() {
         Map<String, String> map = new HashMap<>();
-        map.put("userid", userid);
+        map.put("userid", "11");
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "notesList", map, "notesList", new Bundle(), apiCallbacks);
     }
