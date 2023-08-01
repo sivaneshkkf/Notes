@@ -151,7 +151,15 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = Uri.parse(insertdata.getString("propic", ""));
         image.setImageURI(uri);
 
-//        Toast.makeText(activity, "userid"+userid, Toast.LENGTH_SHORT).show();
+        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteSharedPreferences("userID");
+                Intent intent = new Intent(MainActivity.this, Login_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         callapi();
@@ -257,11 +265,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.nav_notes) {
                     return true;
-                } else if (item.getItemId() == R.id.logout) {
-                    deleteSharedPreferences("userID");
-                    Intent intent = new Intent(MainActivity.this, Login_Activity.class);
-                    startActivity(intent);
-                    finish();
                 }
                 return true;
             }
@@ -273,14 +276,14 @@ public class MainActivity extends AppCompatActivity {
     public void callapi() {
         Map<String, String> map = new HashMap<>();
 
-        map.put("userid", "11");
+        map.put("userid", userid);
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "viewProfile", map, "viewProfile", new Bundle(), apiCallbacks);
     }
 
     public void notesCountapi() {
         Map<String, String> map = new HashMap<>();
-        map.put("userid", "11");
+        map.put("userid", userid);
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "notesList", map, "notesList", new Bundle(), apiCallbacks);
     }

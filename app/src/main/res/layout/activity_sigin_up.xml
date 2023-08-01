@@ -3,48 +3,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".Activity.SiginUp_Activity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo">
+
+    </ImageView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Signup"
+        android:textColor="@color/black"
+        android:textSize="22dp"
+        android:textStyle="bold"/>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/baseLinearlayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logo">
-
-            </ImageView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:gravity="center"
-                android:text="Signup"
-                android:textColor="@color/black"
-                android:textSize="22dp"
-                android:textStyle="bold">
-
-            </TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginRight="60dp"
+                android:layout_marginHorizontal="60dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -250,8 +254,19 @@
                 app:lottie_rawRes="@raw/animation"
                 app:lottie_autoPlay="true"
                 app:lottie_loop="false"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginLeft="5dp"
+                android:text=" Login"
+                android:textColor="@color/yellow"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                android:textStyle="bold"/>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+
 
 </LinearLayout>

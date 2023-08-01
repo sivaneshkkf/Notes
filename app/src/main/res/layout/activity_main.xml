@@ -67,9 +67,8 @@
         style="@style/BottomNavigationViewStyle"
         app:labelVisibilityMode="selected"
         android:focusableInTouchMode="true"
-        app:itemHorizontalTranslationEnabled="true">
+        app:itemHorizontalTranslationEnabled="true"/>
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
 </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -91,22 +90,21 @@
 
 
         <TextView
-            android:id="@+id/titlesssssss"
+            android:id="@+id/logout_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="My Notes"/>
+            android:paddingHorizontal="25dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center|bottom"
+            android:gravity="center|bottom"
+            android:drawableLeft="@drawable/baseline_logout_24"
+            android:drawablePadding="5dp"
+            android:text="Logout"/>
 
         </LinearLayout>
-
-
-
-
-
 
     </com.google.android.material.navigation.NavigationView>
 

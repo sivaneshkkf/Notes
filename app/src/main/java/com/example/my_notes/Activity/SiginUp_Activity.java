@@ -5,12 +5,17 @@ import static com.example.my_notes.Utils.InputValidator.isValidEmail;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.my_notes.API.APICallbacks;
@@ -66,6 +71,15 @@ String name,mail,password;
         super.onCreate(savedInstanceState);
         binding = ActivitySiginUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        activity=this;
+
+        binding.baseLinearlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideSoftKeyboard(activity);
+            }
+        });
+
 
 
         binding.password.addTextChangedListener(new TextWatcher() {
@@ -154,4 +168,17 @@ String name,mail,password;
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "Registration", map, "Registration", new Bundle(), apiCallbacks);
     }
 
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(
+                    activity.getCurrentFocus().getWindowToken(),
+                    0
+            );
+        }
+    }
 }
+
+

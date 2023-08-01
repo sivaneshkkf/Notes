@@ -3,11 +3,15 @@ package com.example.my_notes.Activity;
 import static com.example.my_notes.Utils.InputValidator.isValidEmail;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -25,6 +29,7 @@ import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityEditProfileBinding;
 import com.google.android.material.textfield.TextInputLayout;
+import com.myhexaville.smartimagepicker.ImagePicker;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -39,6 +44,7 @@ ActivityEditProfileBinding binding;
     Activity activity;
 
     SharedPreferences insertdata;
+    ImagePicker imagePicker;
 
     String email,password1;
     SharedPreferences.Editor editor;
@@ -95,10 +101,6 @@ ActivityEditProfileBinding binding;
         setContentView(binding.getRoot());
         activity=this;
 
-       /* insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
-        editor=insertdata.edit();
-        userid = String.valueOf(insertdata.getInt("userid", 0));*/
-
         insertdata= getSharedPreferences("img",MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor=insertdata.edit();
@@ -111,11 +113,16 @@ ActivityEditProfileBinding binding;
         binding.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(Edit_Profile_Activity.this);
+                imagePicker = new ImagePicker(activity,null, imageUri ->{
+
+                    editor.putString("propic", imageUri.toString());
+                    editor.commit();
+                    Uri uri = Uri.parse(insertdata.getString("propic", ""));
+                    binding.profileimg.setImageURI(uri);
+                }).setWithImageCrop(1,1 );
+                imagePicker.choosePicture(true );
             }
-         });
+        });
 
 
 
@@ -229,7 +236,7 @@ ActivityEditProfileBinding binding;
         map.put("password",password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"UpdateProfile",map,"UpdateProfile",new Bundle(),apiCallbacks);
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+   /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -245,6 +252,19 @@ ActivityEditProfileBinding binding;
                 Exception error = result.getError();
             }
         }
+
+
+    }*/
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imagePicker.handleActivityResult(resultCode, requestCode, data);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        imagePicker.handlePermission(requestCode, grantResults);
     }
 
     @Override
