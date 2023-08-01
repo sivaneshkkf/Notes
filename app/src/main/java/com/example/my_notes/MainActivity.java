@@ -40,6 +40,7 @@ import com.example.my_notes.Utils.NetworkController;
 
 import com.example.my_notes.databinding.ActivityMainBinding;
 import com.example.my_notes.databinding.HeaderMenuBinding;
+import com.example.my_notes.databinding.PopupLogoutConfirmationBinding;
 import com.example.my_notes.databinding.PopupSelectionBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -55,10 +56,14 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+
+    PopupLogoutConfirmationBinding logoutpopup;
+    AlertDialog alertlogout;
+
     Activity activity;
     SharedPreferences insertdata;
     SharedPreferences.Editor editor;
-    String userID = "";
+    //String userID = "";
     String notesCount = "";
 
     HeaderMenuBinding headerMenuBinding;
@@ -131,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         activity = this;
 
+        logoutpopup = PopupLogoutConfirmationBinding.inflate(getLayoutInflater());
+        alertlogout=DialogUtils.getCustomAlertDialog(activity,logoutpopup.getRoot());
+        alertlogout.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(logoutpopup.getRoot().getContext(), R.drawable.background));
 
         //for popup view
         popupBinding = PopupSelectionBinding.inflate(getLayoutInflater());
@@ -154,10 +162,25 @@ public class MainActivity extends AppCompatActivity {
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                alertlogout.show();
+
+            }
+        });
+
+        logoutpopup.yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 deleteSharedPreferences("userID");
                 Intent intent = new Intent(MainActivity.this, Login_Activity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        logoutpopup.no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertlogout.dismiss();
             }
         });
 

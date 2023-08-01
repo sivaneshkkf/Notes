@@ -2,6 +2,7 @@ package com.example.my_notes.Activity;
 
 import static com.example.my_notes.Utils.InputValidator.isValidEmail;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -26,6 +27,7 @@ import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
 import com.example.my_notes.MainActivity;
 import com.example.my_notes.R;
+import com.example.my_notes.Utils.DialogUtils;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityEditProfileBinding;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,7 +47,7 @@ ActivityEditProfileBinding binding;
 
     SharedPreferences insertdata;
     ImagePicker imagePicker;
-
+    AlertDialog dialogLoading;
     String email,password1;
     SharedPreferences.Editor editor;
     String userid,name,mail,userregId,password;
@@ -58,6 +60,7 @@ ActivityEditProfileBinding binding;
 
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
+            DialogUtils.dismissLoading(dialogLoading, null, null);
             try {
                 if(tag.equalsIgnoreCase("viewProfile")){
                     if (response.getBoolean("status")){
@@ -100,6 +103,7 @@ ActivityEditProfileBinding binding;
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         activity=this;
+        dialogLoading = DialogUtils.createLoading(this);
 
         insertdata= getSharedPreferences("img",MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
@@ -224,7 +228,7 @@ ActivityEditProfileBinding binding;
         Map<String,String> map=new HashMap<>();
 
         map.put("userid",userid);
-
+        dialogLoading.show();
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"viewProfile",map,"viewProfile",new Bundle(),apiCallbacks);
     }
     public void updateprofilecallapi(){

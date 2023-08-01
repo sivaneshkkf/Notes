@@ -121,6 +121,9 @@ public class Task_Fragment extends Fragment {
         deleteDialog=DialogUtils.getCustomAlertDialog(getActivity(),popupdeleteBinding.getRoot());
         deleteDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(popupdeleteBinding.getRoot().getContext(), R.drawable.background));
 
+        dialogLoading = DialogUtils.createLoading(getActivity());
+        dialogLoading.show();
+
         insertdata = getContext().getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor = insertdata.edit();
         userID = String.valueOf(insertdata.getInt("userid", 0));
@@ -188,7 +191,6 @@ public class Task_Fragment extends Fragment {
     public void callapi(String userID) {
         Map<String, String> map = new HashMap<>();
         map.put("userid", userID);
-
         NetworkController.getInstance().callApiPost(getActivity(), APPConstants.MAIN_URL + "taskList", map, "taskList", new Bundle(), apiCallbacks);
     }
 
