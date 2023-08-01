@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -31,6 +32,7 @@ import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.Utils.OnItemViewClickListener;
 import com.example.my_notes.databinding.FragmentNotesBinding;
 import com.example.my_notes.databinding.FragmentTaskBinding;
+import com.example.my_notes.databinding.PopupdeleteBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +50,10 @@ public class Task_Fragment extends Fragment {
 
   Task_Adapter task_adapter;
     AlertDialog dialogLoading;
+
+    AlertDialog deleteDialog;
+
+    PopupdeleteBinding popupdeleteBinding;
     String taskid,title,subject,tasks;
 
     String userID = "";
@@ -111,6 +117,9 @@ public class Task_Fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        popupdeleteBinding=PopupdeleteBinding.inflate(getLayoutInflater());
+        deleteDialog=DialogUtils.getCustomAlertDialog(getActivity(),popupdeleteBinding.getRoot());
+        deleteDialog.getWindow().setBackgroundDrawable(ContextCompat.getDrawable(popupdeleteBinding.getRoot().getContext(), R.drawable.background));
 
         insertdata = getContext().getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor = insertdata.edit();
@@ -128,12 +137,27 @@ public class Task_Fragment extends Fragment {
                 subject=object.getString("subject");
                 tasks=object.getString("description");
 
+                popupdeleteBinding.yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        binding.swiperefresh.setRefreshing(true);
+                        deletetaskApi(taskid);
+                        Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
+                        task_adapter.notifyDataSetChanged();
+                        callapi(userID);
+                        deleteDialog.dismiss();
+                    }
+                });
+
+                popupdeleteBinding.no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteDialog.dismiss();
+                    }
+                });
+
                 if (v.getId() == R.id.delete) {
-                    binding.swiperefresh.setRefreshing(true);
-                    deletetaskApi(taskid);
-                    Toast.makeText(getActivity(), "clicked", Toast.LENGTH_SHORT).show();
-                    task_adapter.notifyDataSetChanged();
-                    callapi(userID);
+                    deleteDialog.show();
                 }
 
                 if(v.getId()==R.id.edit){

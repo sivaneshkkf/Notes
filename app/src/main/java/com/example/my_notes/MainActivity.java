@@ -151,7 +151,15 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = Uri.parse(insertdata.getString("propic", ""));
         image.setImageURI(uri);
 
-//        Toast.makeText(activity, "userid"+userid, Toast.LENGTH_SHORT).show();
+        binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteSharedPreferences("userID");
+                Intent intent = new Intent(MainActivity.this, Login_Activity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         callapi();
@@ -257,11 +265,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (item.getItemId() == R.id.nav_notes) {
                     return true;
-                } else if (item.getItemId() == R.id.logout) {
-                    deleteSharedPreferences("userID");
-                    Intent intent = new Intent(MainActivity.this, Login_Activity.class);
-                    startActivity(intent);
-                    finish();
                 }
                 return true;
             }

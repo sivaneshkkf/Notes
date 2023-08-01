@@ -1,19 +1,17 @@
 package com.example.my_notes.Activity;
 
-import static android.media.MediaRecorder.VideoSource.CAMERA;
 import static com.example.my_notes.Utils.InputValidator.isValidEmail;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,11 +25,11 @@ import com.example.my_notes.API.APICallbacks;
 import com.example.my_notes.API.APIStatus;
 import com.example.my_notes.API.APPConstants;
 import com.example.my_notes.MainActivity;
-
-import com.example.my_notes.Utils.DialogUtils;
+import com.example.my_notes.R;
 import com.example.my_notes.Utils.NetworkController;
 import com.example.my_notes.databinding.ActivityEditProfileBinding;
 import com.google.android.material.textfield.TextInputLayout;
+import com.myhexaville.smartimagepicker.ImagePicker;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -46,7 +44,8 @@ ActivityEditProfileBinding binding;
     Activity activity;
 
     SharedPreferences insertdata;
-    AlertDialog dialogLoading;
+    ImagePicker imagePicker;
+
     String email,password1;
     SharedPreferences.Editor editor;
     String userid,name,mail,userregId,password;
@@ -59,7 +58,6 @@ ActivityEditProfileBinding binding;
 
         @Override
         public void taskFinish(APIStatus apiStatus, String tag, JSONObject response, String message, Bundle bundle) {
-            DialogUtils.dismissLoading(dialogLoading, null, null);
             try {
                 if(tag.equalsIgnoreCase("viewProfile")){
                     if (response.getBoolean("status")){
@@ -103,12 +101,6 @@ ActivityEditProfileBinding binding;
         setContentView(binding.getRoot());
         activity=this;
 
-        dialogLoading = DialogUtils.createLoading(this);
-
-       /* insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
-        editor=insertdata.edit();
-        userid = String.valueOf(insertdata.getInt("userid", 0));*/
-
         insertdata= getSharedPreferences("img",MODE_PRIVATE);
         insertdata = getSharedPreferences("userID", Context.MODE_PRIVATE);
         editor=insertdata.edit();
@@ -121,11 +113,16 @@ ActivityEditProfileBinding binding;
         binding.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .start(Edit_Profile_Activity.this);
+                imagePicker = new ImagePicker(activity,null, imageUri ->{
+
+                    editor.putString("propic", imageUri.toString());
+                    editor.commit();
+                    Uri uri = Uri.parse(insertdata.getString("propic", ""));
+                    binding.profileimg.setImageURI(uri);
+                }).setWithImageCrop(1,1 );
+                imagePicker.choosePicture(true );
             }
-         });
+        });
 
 
 
@@ -217,6 +214,7 @@ ActivityEditProfileBinding binding;
             public void onClick(View v) {
                 Intent intent=new Intent(activity, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -224,7 +222,6 @@ ActivityEditProfileBinding binding;
 
         public void callapi(){
         Map<String,String> map=new HashMap<>();
-        dialogLoading.show();
 
         map.put("userid",userid);
 
@@ -239,7 +236,7 @@ ActivityEditProfileBinding binding;
         map.put("password",password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL+"UpdateProfile",map,"UpdateProfile",new Bundle(),apiCallbacks);
     }
- /*   public void onActivityResult(int requestCode, int resultCode, Intent data) {
+   /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -254,39 +251,20 @@ ActivityEditProfileBinding binding;
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
-        }else if (requestCode == CAMERA && resultCode == Activity.RESULT_OK) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            Uri resultUri = result.getUri();
-            editor.putString("propic", resultUri.toString());
-            editor.commit();
-            Uri uri = Uri.parse(insertdata.getString("propic", ""));
-            binding.profileimg.setImageURI(uri);
-//            Bitmap photo = (Bitmap) data.getExtras().get("data");
-//            binding.profileimg.setImageBitmap(photo);
         }
-    }
-*/
-    //to get gallery image and camera image
+
+
+    }*/
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-                editor.putString("propic", resultUri.toString());
-                editor.commit();
-                binding.profileimg.setImageURI(resultUri); // Set the cropped image URI directly to the ImageView
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        } else if (requestCode == CAMERA && resultCode == Activity.RESULT_OK) {
-            // Get the captured image directly from the data Intent
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            // Now you can save the photo to storage or directly set it to the ImageView
-            // For example, to set the captured image to the ImageView:
-            binding.profileimg.setImageBitmap(photo);
-        }
+        imagePicker.handleActivityResult(resultCode, requestCode, data);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        imagePicker.handlePermission(requestCode, grantResults);
     }
 
     @Override
@@ -294,5 +272,6 @@ ActivityEditProfileBinding binding;
         super.onBackPressed();
         Intent intent=new Intent(activity,MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

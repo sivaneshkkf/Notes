@@ -56,8 +56,9 @@ dependencies {
     //this is for swip and refresh the api
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+//image cropper
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.myhexaville:smart-image-picker:1.0.4'
 
 
 //    util
