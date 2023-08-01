@@ -80,6 +80,7 @@ ActivityEditNotesBinding binding;
                     subject = binding.edtSubject.getText().toString();
                     desc = binding.edtNotes.getText().toString();
                     callapi();
+                    finish();
                 }
 
             }
@@ -102,5 +103,11 @@ ActivityEditNotesBinding binding;
         map.put("Subject", subject);
         map.put("Desc", desc);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "updateNotes", map, "updateNotes", new Bundle(), apiCallbacks);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

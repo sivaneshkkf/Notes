@@ -273,14 +273,14 @@ public class MainActivity extends AppCompatActivity {
     public void callapi() {
         Map<String, String> map = new HashMap<>();
 
-        map.put("userid", "11");
+        map.put("userid", userid);
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "viewProfile", map, "viewProfile", new Bundle(), apiCallbacks);
     }
 
     public void notesCountapi() {
         Map<String, String> map = new HashMap<>();
-        map.put("userid", "11");
+        map.put("userid", userid);
 
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "notesList", map, "notesList", new Bundle(), apiCallbacks);
     }

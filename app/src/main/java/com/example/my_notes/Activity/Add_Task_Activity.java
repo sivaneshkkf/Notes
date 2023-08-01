@@ -77,7 +77,9 @@ ActivityAddTaskBinding binding;
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+
+            {
                 finish();
             }
         });
@@ -97,4 +99,5 @@ ActivityAddTaskBinding binding;
         super.onBackPressed();
         finish();
     }
+
 }

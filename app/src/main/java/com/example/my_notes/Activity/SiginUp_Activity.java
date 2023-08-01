@@ -5,12 +5,15 @@ import static com.example.my_notes.Utils.InputValidator.isValidEmail;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.example.my_notes.API.APICallbacks;
@@ -66,6 +69,17 @@ String name,mail,password;
         super.onCreate(savedInstanceState);
         binding = ActivitySiginUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
+        binding.linear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               hideKeyboard(SiginUp_Activity.this);
+
+
+            }
+        });
 
 
         binding.password.addTextChangedListener(new TextWatcher() {
@@ -153,5 +167,31 @@ String name,mail,password;
         map.put("password",password);
         NetworkController.getInstance().callApiPost(activity, APPConstants.MAIN_URL + "Registration", map, "Registration", new Bundle(), apiCallbacks);
     }
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+   /* @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        // Close the keyboard when scrolling starts
+        View focusedView = getCurrentFocus();
+        if (focusedView != null) {
+            hideKeyboard(this, focusedView);
+        }
+    }
+
+    public static void hideKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }*/
 
 }
